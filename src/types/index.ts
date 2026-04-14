@@ -126,6 +126,7 @@ export interface DiscoverProfile {
   connectionDegree?: 2 | 3 | null
   greekOrganization?: string
   greekOrganizationType?: string
+  schoolEmailVerified?: boolean
 }
 
 export interface NearbyProfile extends DiscoverProfile {
@@ -156,12 +157,21 @@ export interface PublicProfile {
   values?: string[]
   profilePhotoUrl?: string
   idVerified: boolean
+  schoolEmailVerified?: boolean
   college?: College | null
   socialLinks?: { instagram?: string; twitter?: string; tiktok?: string; linkedin?: string }
   createdAt: string
   posts: UserPost[]
   stats: ProfileStats
   connection?: ConnectionState | null
+  strengthStats?: {
+    bench?: number | null
+    squat?: number | null
+    deadlift?: number | null
+    pullUps?: number | null
+    pushUps?: number | null
+    videoUrl?: string | null
+  } | null
 }
 
 export interface ProfileViewer {

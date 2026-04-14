@@ -763,6 +763,15 @@ export default function UserProfilePage() {
     smoking?: string | null
     wantsKids?: string | null
     politicalViews?: string | null
+    schoolEmailVerified?: boolean | null
+    strengthStats?: {
+      bench?: number | null
+      squat?: number | null
+      deadlift?: number | null
+      pullUps?: number | null
+      pushUps?: number | null
+      videoUrl?: string | null
+    } | null
   }
 
   // Use real prompts if the user has set them, otherwise fall back to auto-generated
@@ -926,6 +935,12 @@ export default function UserProfilePage() {
                 Moving to {profile.futureLocation}
               </span>
             )}
+            {profileAny.schoolEmailVerified && (
+              <span className="flex shrink-0 items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700 shadow-sm">
+                <GraduationCap size={12} className="text-emerald-500" />
+                Verified Student
+              </span>
+            )}
           </div>
         )}
 
@@ -1024,6 +1039,68 @@ export default function UserProfilePage() {
                   </span>
                 )}
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* ── Strength stats ────────────────────────────────────────────────── */}
+        {profileAny.strengthStats && (
+          profileAny.strengthStats.bench ||
+          profileAny.strengthStats.squat ||
+          profileAny.strengthStats.deadlift ||
+          profileAny.strengthStats.pullUps ||
+          profileAny.strengthStats.pushUps
+        ) && (
+          <div className="mt-3 px-4">
+            <div className="rounded-[20px] border border-gray-100 bg-white p-5 shadow-sm">
+              <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-gray-400">Strength</p>
+              <div className="grid grid-cols-3 gap-2">
+                {profileAny.strengthStats?.bench && (
+                  <div className="flex flex-col items-center rounded-2xl bg-gray-50 py-3 px-2">
+                    <span className="text-[10px] font-semibold uppercase tracking-wide text-gray-400 mb-1">Bench</span>
+                    <span className="text-lg font-bold text-gray-900">{profileAny.strengthStats.bench}</span>
+                    <span className="text-[10px] text-gray-400">lbs</span>
+                  </div>
+                )}
+                {profileAny.strengthStats?.squat && (
+                  <div className="flex flex-col items-center rounded-2xl bg-gray-50 py-3 px-2">
+                    <span className="text-[10px] font-semibold uppercase tracking-wide text-gray-400 mb-1">Squat</span>
+                    <span className="text-lg font-bold text-gray-900">{profileAny.strengthStats.squat}</span>
+                    <span className="text-[10px] text-gray-400">lbs</span>
+                  </div>
+                )}
+                {profileAny.strengthStats?.deadlift && (
+                  <div className="flex flex-col items-center rounded-2xl bg-gray-50 py-3 px-2">
+                    <span className="text-[10px] font-semibold uppercase tracking-wide text-gray-400 mb-1">Deadlift</span>
+                    <span className="text-lg font-bold text-gray-900">{profileAny.strengthStats.deadlift}</span>
+                    <span className="text-[10px] text-gray-400">lbs</span>
+                  </div>
+                )}
+                {profileAny.strengthStats?.pullUps && (
+                  <div className="flex flex-col items-center rounded-2xl bg-gray-50 py-3 px-2">
+                    <span className="text-[10px] font-semibold uppercase tracking-wide text-gray-400 mb-1">Pull-ups</span>
+                    <span className="text-lg font-bold text-gray-900">{profileAny.strengthStats.pullUps}</span>
+                    <span className="text-[10px] text-gray-400">reps</span>
+                  </div>
+                )}
+                {profileAny.strengthStats?.pushUps && (
+                  <div className="flex flex-col items-center rounded-2xl bg-gray-50 py-3 px-2">
+                    <span className="text-[10px] font-semibold uppercase tracking-wide text-gray-400 mb-1">Push-ups</span>
+                    <span className="text-lg font-bold text-gray-900">{profileAny.strengthStats.pushUps}</span>
+                    <span className="text-[10px] text-gray-400">reps</span>
+                  </div>
+                )}
+              </div>
+              {profileAny.strengthStats?.videoUrl && (
+                <a
+                  href={profileAny.strengthStats.videoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 flex items-center justify-center gap-2 rounded-2xl border border-gray-200 py-2.5 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
+                >
+                  Watch proof video
+                </a>
+              )}
             </div>
           </div>
         )}

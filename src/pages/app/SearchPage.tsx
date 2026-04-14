@@ -54,15 +54,22 @@ function SkeletonCard() {
     />
   )
   return (
-    <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
-      <div className="aspect-[3/4] bg-gray-100 relative overflow-hidden">
-        {shimmer(0)}
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+      <div className="flex gap-4 p-4">
+        <div className="w-16 h-16 rounded-2xl bg-gray-100 relative overflow-hidden flex-shrink-0">{shimmer(0)}</div>
+        <div className="flex-1 space-y-2 pt-1">
+          <div className="h-4 bg-gray-100 rounded w-2/3 relative overflow-hidden">{shimmer(0.1)}</div>
+          <div className="h-3 bg-gray-100 rounded w-1/2 relative overflow-hidden">{shimmer(0.2)}</div>
+          <div className="h-3 bg-gray-100 rounded w-3/4 relative overflow-hidden">{shimmer(0.25)}</div>
+          <div className="flex gap-1 mt-1">
+            <div className="h-5 w-16 bg-gray-100 rounded-full relative overflow-hidden">{shimmer(0.3)}</div>
+            <div className="h-5 w-12 bg-gray-100 rounded-full relative overflow-hidden">{shimmer(0.35)}</div>
+          </div>
+        </div>
       </div>
-      <div className="p-3 space-y-2">
-        <div className="h-4 bg-gray-100 rounded w-3/4 relative overflow-hidden">{shimmer(0.1)}</div>
-        <div className="h-3 bg-gray-100 rounded w-1/2 relative overflow-hidden">{shimmer(0.2)}</div>
-        <div className="h-3 bg-gray-100 rounded w-2/3 relative overflow-hidden">{shimmer(0.3)}</div>
-        <div className="h-8 bg-gray-100 rounded-xl mt-3 relative overflow-hidden">{shimmer(0.15)}</div>
+      <div className="px-4 pb-4 flex gap-2">
+        <div className="flex-1 h-8 bg-gray-100 rounded-xl relative overflow-hidden">{shimmer(0.15)}</div>
+        <div className="flex-1 h-8 bg-gray-100 rounded-xl relative overflow-hidden">{shimmer(0.2)}</div>
       </div>
     </div>
   )
@@ -135,7 +142,7 @@ function NearbyRadar({
   )
 }
 
-// --- Individual profile card ---
+// --- LinkedIn-style profile card ---
 function SearchProfileCard({ profile }: { profile: DiscoverProfile }) {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
@@ -149,191 +156,138 @@ function SearchProfileCard({ profile }: { profile: DiscoverProfile }) {
         queryClient.invalidateQueries({ queryKey: ['matches'] })
       }
     },
-    onError: () => {
-      // silently allow retry — no toast spam in a grid context
-    },
   })
 
   const bgGradient = getGradient(profile.firstName)
 
   return (
     <motion.div
-      whileTap={{ scale: 0.97 }}
-      transition={{ type: 'spring', stiffness: 500, damping: 25 }}
-      className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden"
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileTap={{ scale: 0.985 }}
+      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+      className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden"
     >
-      {/* Photo / gradient fallback */}
       <button
         type="button"
         onClick={() => navigate(`/user/${profile.id}`)}
-        className="relative aspect-[3/4] w-full text-left"
+        className="w-full text-left flex gap-4 p-4"
       >
-        {profile.profilePhotoUrl ? (
-          <img
-            src={profile.profilePhotoUrl}
-            alt={profile.firstName}
-            className="w-full h-full object-cover"
-            width={200}
-            height={267}
-          />
-        ) : (
-          <div
-            className={`w-full h-full bg-gradient-to-br ${bgGradient} flex items-center justify-center`}
-          >
-            <span className="text-white text-6xl font-bold opacity-30 select-none">
-              {profile.firstName[0]}
-            </span>
-          </div>
-        )}
+        {/* Avatar */}
+        <div className="relative flex-shrink-0">
+          {profile.profilePhotoUrl ? (
+            <img
+              src={profile.profilePhotoUrl}
+              alt={profile.firstName}
+              className="w-16 h-16 rounded-2xl object-cover"
+              width={64}
+              height={64}
+            />
+          ) : (
+            <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${bgGradient} flex items-center justify-center`}>
+              <span className="text-white text-2xl font-bold opacity-70">{profile.firstName[0]}</span>
+            </div>
+          )}
+          {profile.idVerified && (
+            <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center border-2 border-white">
+              <ShieldCheck size={10} className="text-white" />
+            </div>
+          )}
+        </div>
 
-        {/* Verified badge */}
-        {profile.idVerified && (
-          <div className="absolute top-2 left-2 flex items-center gap-1 bg-green-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full shadow-sm">
-            <ShieldCheck size={10} />
-            Verified
-          </div>
-        )}
-
-        {profile.distanceMiles !== undefined && (
-          <div className="absolute top-2 right-2 rounded-full bg-black/45 px-2 py-0.5 text-[10px] font-semibold text-white shadow-sm backdrop-blur">
-            {profile.distanceMiles.toFixed(1)} mi
-          </div>
-        )}
-
-        {profile.distanceMiles !== undefined && (
-          <div className="absolute top-2 right-2 rounded-full bg-black/65 px-2 py-0.5 text-[10px] font-semibold text-white shadow-sm backdrop-blur">
-            {Math.round(profile.distanceMiles)} mi
-          </div>
-        )}
-
-        {/* Gradient overlay at bottom */}
-        <div className="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-black/40 to-transparent" />
-
-        {/* Name + age over photo */}
-        <div className="absolute bottom-2 left-2.5 right-2">
+        {/* Info */}
+        <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5 flex-wrap">
-            <p className="text-white font-bold text-sm leading-tight drop-shadow">
-              {profile.firstName}, {profile.age}
+            <p className="font-bold text-gray-900 text-[15px] leading-tight">
+              {profile.firstName} {profile.lastName ? profile.lastName.charAt(0) + '.' : ''}{profile.age ? `, ${profile.age}` : ''}
             </p>
             {profile.connectionDegree && (
-              <span className="inline-flex items-center rounded-full border border-white/30 bg-white/20 backdrop-blur-sm px-1.5 py-0.5 text-[10px] font-semibold text-white/90">
+              <span className="text-[10px] font-semibold text-gray-400 bg-gray-100 rounded-full px-1.5 py-0.5">
                 {profile.connectionDegree === 2 ? '2nd' : '3rd'}
               </span>
             )}
           </div>
+
+          {profile.headline && (
+            <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">{profile.headline}</p>
+          )}
+
+          <div className="mt-1.5 space-y-0.5">
+            {(profile.currentRole || profile.company) && (
+              <div className="flex items-center gap-1 min-w-0">
+                <Briefcase size={11} className="text-gray-400 flex-shrink-0" />
+                <span className="text-xs text-gray-500 truncate">
+                  {[profile.currentRole, profile.company].filter(Boolean).join(' · ')}
+                </span>
+              </div>
+            )}
+            {profile.college && (
+              <div className="flex items-center gap-1 min-w-0">
+                <GraduationCap size={11} className="text-purple-400 flex-shrink-0" />
+                <span className="text-xs text-gray-500 truncate">{profile.college.name}</span>
+                {profile.schoolEmailVerified && (
+                  <span className="text-[9px] font-bold text-emerald-600 bg-emerald-50 rounded-full px-1.5 py-0.5 flex-shrink-0">✓ Verified</span>
+                )}
+              </div>
+            )}
+            {(profile.locationLabel || profile.futureLocation) && (
+              <div className="flex items-center gap-1 min-w-0">
+                <MapPin size={11} className="text-gray-400 flex-shrink-0" />
+                <span className="text-xs text-gray-500 truncate">
+                  {profile.locationLabel}
+                  {profile.futureLocation && profile.futureLocation !== profile.locationLabel && (
+                    <span className="text-gray-400"> → {profile.futureLocation}</span>
+                  )}
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* Credential badges */}
+          {(profile.gpa || profile.sat || profile.act) && (
+            <div className="flex flex-wrap gap-1 mt-2">
+              {profile.gpa && (
+                <span className="inline-flex items-center gap-0.5 rounded-full bg-violet-50 px-2 py-0.5 text-[10px] font-semibold text-violet-700">
+                  <Award size={9} /> GPA {profile.gpa.toFixed(1)}
+                </span>
+              )}
+              {profile.sat && (
+                <span className="inline-flex items-center gap-0.5 rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-semibold text-amber-700">
+                  SAT {profile.sat}
+                </span>
+              )}
+              {profile.act && (
+                <span className="inline-flex items-center gap-0.5 rounded-full bg-sky-50 px-2 py-0.5 text-[10px] font-semibold text-sky-700">
+                  ACT {profile.act}
+                </span>
+              )}
+            </div>
+          )}
         </div>
       </button>
 
-      {/* Info below photo */}
-      <div className="px-3 pt-2.5 pb-3 space-y-1.5">
-        {profile.college && (
-          <div className="flex items-center gap-1 min-w-0">
-            <GraduationCap size={12} className="text-purple-500 flex-shrink-0" />
-            <span className="text-xs text-gray-600 font-medium truncate">
-              {profile.college.name}
-            </span>
-          </div>
-        )}
-
-        {profile.major && (
-          <div className="flex items-center gap-1 min-w-0">
-            <BookOpen size={12} className="text-gray-400 flex-shrink-0" />
-            <span className="text-xs text-gray-500 truncate">{profile.major}</span>
-          </div>
-        )}
-
-        {profile.greekOrganization && (
-          <div className="flex items-center gap-1 min-w-0">
-            <span className="text-[10px] flex-shrink-0">
-              {profile.greekOrganizationType === 'FRATERNITY' ? '🏛️' : '💜'}
-            </span>
-            <span className="text-xs text-purple-600 font-semibold truncate">{profile.greekOrganization}</span>
-          </div>
-        )}
-
-        {(profile.currentRole || profile.company) && (
-          <div className="flex items-center gap-1 min-w-0">
-            <Briefcase size={12} className="text-gray-400 flex-shrink-0" />
-            <span className="text-xs text-gray-500 truncate">
-              {[profile.currentRole, profile.company].filter(Boolean).join(' at ')}
-            </span>
-          </div>
-        )}
-
-        {profile.locationLabel && (
-          <div className="flex items-center gap-1 min-w-0">
-            <MapPin size={12} className="text-gray-400 flex-shrink-0" />
-            <span className="text-xs text-gray-500 truncate">{profile.locationLabel}</span>
-          </div>
-        )}
-
-        {profile.workLocation && (
-          <div className="flex items-center gap-1 min-w-0">
-            <Building2 size={12} className="text-gray-400 flex-shrink-0" />
-            <span className="text-xs text-gray-500 truncate">Works in {profile.workLocation}</span>
-          </div>
-        )}
-
-        {profile.futureLocation && (
-          <div className="flex items-center gap-1 min-w-0">
-            <ArrowRight size={12} className="text-gray-400 flex-shrink-0" />
-            <span className="text-xs text-gray-500 truncate">Moving to {profile.futureLocation}</span>
-          </div>
-        )}
-
-        {profile.distanceMiles !== undefined && (
-          <div className="flex items-center gap-1 min-w-0">
-            <LocateFixed size={12} className="text-gray-400 flex-shrink-0" />
-            <span className="text-xs text-gray-500 truncate">{profile.distanceMiles.toFixed(1)} miles away</span>
-          </div>
-        )}
-
-        {profile.headline && (
-          <p className="text-xs text-gray-500 line-clamp-2">{profile.headline}</p>
-        )}
-
-        {(profile.gpa || profile.sat || profile.act) && (
-          <div className="flex flex-wrap gap-1 pt-1">
-            {profile.gpa && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-violet-50 px-2 py-1 text-[10px] font-semibold text-violet-700">
-                <Award size={10} />
-                GPA {profile.gpa.toFixed(2)}
-              </span>
-            )}
-            {profile.sat && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-1 text-[10px] font-semibold text-amber-700">
-                <Award size={10} />
-                SAT {profile.sat}
-              </span>
-            )}
-            {profile.act && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-sky-50 px-2 py-1 text-[10px] font-semibold text-sky-700">
-                <Award size={10} />
-                ACT {profile.act}
-              </span>
-            )}
-          </div>
-        )}
-
+      {/* Action row */}
+      <div className="px-4 pb-4 flex gap-2">
         <button
           type="button"
           onClick={() => navigate(`/user/${profile.id}`)}
-          className="text-xs font-medium text-purple-600 hover:text-purple-700 transition-colors text-left"
+          className="flex-1 rounded-xl border border-gray-200 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
         >
-          View profile
+          View Profile
         </button>
-
-        <Button
-          variant={interested ? 'secondary' : 'primary'}
-          size="sm"
-          fullWidth
-          loading={isPending}
-          disabled={interested}
+        <motion.button
+          whileTap={{ scale: 0.93 }}
+          type="button"
+          disabled={interested || isPending}
           onClick={() => sendInterest()}
-          className="mt-2 !py-2 !text-xs"
+          className={`flex-1 rounded-xl py-2 text-xs font-semibold transition-all ${
+            interested
+              ? 'bg-gray-100 text-gray-400 cursor-default'
+              : 'bg-gradient-to-r from-purple-600 to-violet-600 text-white shadow-sm hover:shadow-purple-200 hover:shadow-md'
+          }`}
         >
-          {interested ? 'Interest Sent' : 'Express Interest'}
-        </Button>
+          {isPending ? '...' : interested ? 'Sent ✓' : 'Connect'}
+        </motion.button>
       </div>
     </motion.div>
   )
@@ -520,9 +474,9 @@ export default function SearchPage() {
     <AppLayout>
       <div className="min-h-screen bg-gray-50 pb-28">
         <div className="bg-white border-b border-gray-100 px-5 pt-4 pb-5">
-          <h1 className="text-xl font-bold text-gray-900">Find your match</h1>
+          <h1 className="text-xl font-bold text-gray-900">People</h1>
           <p className="mt-0.5 text-sm text-gray-500">
-            Search by name, school, company, city, or just describe who you're looking for.
+            Search by name, school, company, city, or just describe who you&apos;re looking for.
           </p>
 
           <div className="mt-4 inline-flex rounded-2xl bg-gray-100 p-1">
@@ -655,7 +609,7 @@ export default function SearchPage() {
                         <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-400">
                           Curated for you
                         </p>
-                        <div className="grid grid-cols-2 gap-2">
+                        <div className="flex flex-col gap-3">
                           {featuredProfiles.slice(0, 8).map((profile, index) => (
                             <motion.div
                               key={profile.id}
@@ -686,8 +640,8 @@ export default function SearchPage() {
               </AnimatePresence>
 
               {showSkeletons && (
-                <div className="grid grid-cols-2 gap-2">
-                  {Array.from({ length: 6 }).map((_, i) => (
+                <div className="flex flex-col gap-3">
+                  {Array.from({ length: 4 }).map((_, i) => (
                     <SkeletonCard key={i} />
                   ))}
                 </div>
@@ -698,7 +652,7 @@ export default function SearchPage() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.2 }}
-                  className="grid grid-cols-2 gap-2"
+                  className="flex flex-col gap-3"
                 >
                   {results.map((profile, index) => (
                     <motion.div
@@ -773,7 +727,7 @@ export default function SearchPage() {
               )}
 
               {showNearbySkeletons && (
-                <div className="grid grid-cols-2 gap-2">
+                <div className="flex flex-col gap-3">
                   {Array.from({ length: 4 }).map((_, i) => (
                     <SkeletonCard key={i} />
                   ))}
@@ -801,7 +755,7 @@ export default function SearchPage() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="flex flex-col gap-3">
                     {nearbyCards.map((profile, index) => (
                       <motion.div
                         key={profile.id}
