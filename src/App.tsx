@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
+import { Analytics } from '@vercel/analytics/react'
 import { useAuth } from './hooks/useAuth'
 import { FullPageSpinner } from './components/ui/LoadingSpinner'
 
@@ -56,7 +57,8 @@ function RootRedirect() {
 
 export default function App() {
   return (
-    <Routes>
+    <>
+      <Routes>
       {/* Root */}
       <Route path="/" element={<RootRedirect />} />
 
@@ -161,6 +163,8 @@ export default function App() {
 
       {/* 404 */}
       <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+      </Routes>
+      <Analytics />
+    </>
   )
 }
