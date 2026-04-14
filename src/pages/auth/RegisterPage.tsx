@@ -94,13 +94,13 @@ export default function RegisterPage() {
         <Input
           label="Email"
           type="email"
-          placeholder="you@university.edu"
+          placeholder="you@example.com"
           value={form.email}
           onChange={update('email')}
           error={fieldErrors.email}
           leftIcon={<Mail size={16} />}
           autoComplete="email"
-          hint="Use your college email for verified status"
+          hint="Use your .edu email to unlock a Verified Student badge"
         />
 
         <Input

@@ -262,6 +262,16 @@ export default function ProfilePage() {
     sexuality?: string
   }>({})
 
+  // ── Strength stats state ──────────────────────────────────────────────────
+  const [strengthForm, setStrengthForm] = useState<{
+    bench: string
+    squat: string
+    deadlift: string
+    pullUps: string
+    pushUps: string
+    videoUrl: string
+  }>({ bench: '', squat: '', deadlift: '', pullUps: '', pushUps: '', videoUrl: '' })
+
   const [postCaption, setPostCaption] = useState('')
   const [postLocationTag, setPostLocationTag] = useState('')
   const [postFile, setPostFile] = useState<File | null>(null)
@@ -382,6 +392,15 @@ export default function ProfilePage() {
       birthCity: sourceWithPrompts.birthCity ?? undefined,
       sexuality: sourceWithPrompts.sexuality ?? undefined,
     })
+    const ss = (sourceWithPrompts as unknown as { strengthStats?: { bench?: number; squat?: number; deadlift?: number; pullUps?: number; pushUps?: number; videoUrl?: string } }).strengthStats
+    setStrengthForm({
+      bench: ss?.bench?.toString() ?? '',
+      squat: ss?.squat?.toString() ?? '',
+      deadlift: ss?.deadlift?.toString() ?? '',
+      pullUps: ss?.pullUps?.toString() ?? '',
+      pushUps: ss?.pushUps?.toString() ?? '',
+      videoUrl: ss?.videoUrl ?? '',
+    })
     setShowPromptPicker(false)
     setValidationErrors({})
     setEditing(true)
@@ -464,6 +483,14 @@ export default function ProfilePage() {
       politicalViews: form.politicalViews,
       birthCity: form.birthCity,
       sexuality: form.sexuality,
+      strengthStats: (strengthForm.bench || strengthForm.squat || strengthForm.deadlift || strengthForm.pullUps || strengthForm.pushUps || strengthForm.videoUrl) ? {
+        bench: strengthForm.bench ? Number(strengthForm.bench) : undefined,
+        squat: strengthForm.squat ? Number(strengthForm.squat) : undefined,
+        deadlift: strengthForm.deadlift ? Number(strengthForm.deadlift) : undefined,
+        pullUps: strengthForm.pullUps ? Number(strengthForm.pullUps) : undefined,
+        pushUps: strengthForm.pushUps ? Number(strengthForm.pushUps) : undefined,
+        videoUrl: strengthForm.videoUrl || undefined,
+      } : undefined,
     }
 
     updateMutation.mutate(payload)
@@ -1582,6 +1609,113 @@ export default function ProfilePage() {
                 )
               })()
             )}
+          </SectionCard>
+
+          {/* Strength showcase */}
+          <SectionCard label="Strength">
+            {editing ? (
+              <div className="space-y-4">
+                <p className="text-xs text-gray-400">Showcase your lifts. All weights in lbs. Add a video link to verify.</p>
+                <div className="grid grid-cols-2 gap-3">
+                  {([['bench', '🏋️ Bench Press'], ['squat', '🦵 Squat'], ['deadlift', '⚡ Deadlift']] as const).map(([key, label]) => (
+                    <div key={key}>
+                      <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1 block">{label}</label>
+                      <div className="flex items-center bg-gray-50 border border-gray-200 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-purple-400">
+                        <input
+                          type="number"
+                          value={strengthForm[key]}
+                          onChange={(e) => setStrengthForm(prev => ({ ...prev, [key]: e.target.value }))}
+                          placeholder="lbs"
+                          className="flex-1 bg-transparent py-2.5 px-3 text-sm focus:outline-none text-gray-900 placeholder:text-gray-400"
+                        />
+                        <span className="pr-3 text-xs text-gray-400">lbs</span>
+                      </div>
+                    </div>
+                  ))}
+                  {([['pullUps', '💪 Pull-ups'], ['pushUps', '🤸 Push-ups']] as const).map(([key, label]) => (
+                    <div key={key}>
+                      <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1 block">{label}</label>
+                      <div className="flex items-center bg-gray-50 border border-gray-200 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-purple-400">
+                        <input
+                          type="number"
+                          value={strengthForm[key]}
+                          onChange={(e) => setStrengthForm(prev => ({ ...prev, [key]: e.target.value }))}
+                          placeholder="reps"
+                          className="flex-1 bg-transparent py-2.5 px-3 text-sm focus:outline-none text-gray-900 placeholder:text-gray-400"
+                        />
+                        <span className="pr-3 text-xs text-gray-400">reps</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div>
+                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1 block">🎥 Proof video URL (optional)</label>
+                  <input
+                    type="url"
+                    value={strengthForm.videoUrl}
+                    onChange={(e) => setStrengthForm(prev => ({ ...prev, videoUrl: e.target.value }))}
+                    placeholder="YouTube, Instagram, TikTok link..."
+                    className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400 text-gray-900 placeholder:text-gray-400"
+                  />
+                </div>
+              </div>
+            ) : (() => {
+              const ss = (displayProfile as unknown as { strengthStats?: { bench?: number; squat?: number; deadlift?: number; pullUps?: number; pushUps?: number; videoUrl?: string } }).strengthStats
+              if (!ss || (!ss.bench && !ss.squat && !ss.deadlift && !ss.pullUps && !ss.pushUps)) {
+                return <EmptyFieldPrompt>Add your lifts — bench, squat, deadlift, pull-ups, push-ups.</EmptyFieldPrompt>
+              }
+              return (
+                <div className="space-y-3">
+                  <div className="grid grid-cols-3 gap-2">
+                    {ss.bench && (
+                      <div className="flex flex-col items-center bg-gray-50 rounded-xl py-3 px-2 border border-gray-100">
+                        <span className="text-lg font-bold text-gray-900">{ss.bench}</span>
+                        <span className="text-[10px] text-gray-400 uppercase tracking-wide">lbs</span>
+                        <span className="text-xs text-gray-600 mt-0.5">Bench</span>
+                      </div>
+                    )}
+                    {ss.squat && (
+                      <div className="flex flex-col items-center bg-gray-50 rounded-xl py-3 px-2 border border-gray-100">
+                        <span className="text-lg font-bold text-gray-900">{ss.squat}</span>
+                        <span className="text-[10px] text-gray-400 uppercase tracking-wide">lbs</span>
+                        <span className="text-xs text-gray-600 mt-0.5">Squat</span>
+                      </div>
+                    )}
+                    {ss.deadlift && (
+                      <div className="flex flex-col items-center bg-gray-50 rounded-xl py-3 px-2 border border-gray-100">
+                        <span className="text-lg font-bold text-gray-900">{ss.deadlift}</span>
+                        <span className="text-[10px] text-gray-400 uppercase tracking-wide">lbs</span>
+                        <span className="text-xs text-gray-600 mt-0.5">Deadlift</span>
+                      </div>
+                    )}
+                    {ss.pullUps && (
+                      <div className="flex flex-col items-center bg-gray-50 rounded-xl py-3 px-2 border border-gray-100">
+                        <span className="text-lg font-bold text-gray-900">{ss.pullUps}</span>
+                        <span className="text-[10px] text-gray-400 uppercase tracking-wide">reps</span>
+                        <span className="text-xs text-gray-600 mt-0.5">Pull-ups</span>
+                      </div>
+                    )}
+                    {ss.pushUps && (
+                      <div className="flex flex-col items-center bg-gray-50 rounded-xl py-3 px-2 border border-gray-100">
+                        <span className="text-lg font-bold text-gray-900">{ss.pushUps}</span>
+                        <span className="text-[10px] text-gray-400 uppercase tracking-wide">reps</span>
+                        <span className="text-xs text-gray-600 mt-0.5">Push-ups</span>
+                      </div>
+                    )}
+                  </div>
+                  {ss.videoUrl && (
+                    <a
+                      href={ss.videoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 text-sm text-purple-600 font-medium hover:text-purple-700"
+                    >
+                      🎥 Watch proof video
+                    </a>
+                  )}
+                </div>
+              )
+            })()}
           </SectionCard>
 
           {/* Social links */}

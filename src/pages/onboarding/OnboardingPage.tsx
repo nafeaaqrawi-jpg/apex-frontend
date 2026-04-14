@@ -971,8 +971,7 @@ function Step5Credentials({ state, patch, onContinue }: StepProps) {
 
   function validate(): boolean {
     const e = { college: '', major: '' }
-    if (!state.collegeId) e.college = 'Please select your college'
-    if (!state.major.trim()) e.major = 'Major is required'
+    if (!state.major.trim()) e.major = 'Major or field of study is required'
     setErrors(e)
     return !e.college && !e.major
   }
@@ -981,13 +980,14 @@ function Step5Credentials({ state, patch, onContinue }: StepProps) {
     <div className="flex-1 flex flex-col px-6 pt-16 pb-8 max-w-md mx-auto w-full overflow-y-auto">
       <div className="flex-1 flex flex-col gap-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-1">Your credentials</h1>
-          <p className="text-sm text-gray-500">Your academic and professional background.</p>
+          <h1 className="text-2xl font-bold text-gray-900 mb-1">Your background</h1>
+          <p className="text-sm text-gray-500">Academic and professional credentials.</p>
         </div>
 
         {/* College search */}
         <div className="flex flex-col gap-1.5 relative">
-          <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">College</label>
+          <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">College / University <span className="text-gray-400 normal-case font-normal">(optional)</span></label>
+          <p className="text-xs text-purple-600 -mt-0.5">Sign up with a .edu email to get a Verified Student badge</p>
           <div className="relative">
             <input
               type="text"
@@ -1143,6 +1143,7 @@ function Step5Credentials({ state, patch, onContinue }: StepProps) {
         <Button size="lg" fullWidth onClick={() => validate() && onContinue()}>
           Continue
         </Button>
+        <p className="text-center text-xs text-gray-400 mt-3">College is optional — add it anytime</p>
       </div>
     </div>
   )

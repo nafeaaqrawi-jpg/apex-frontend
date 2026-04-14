@@ -79,6 +79,14 @@ export interface UpdateProfilePayload {
   sexuality?: string
   greekOrganization?: string
   greekOrganizationType?: 'FRATERNITY' | 'SORORITY' | 'CO-ED'
+  strengthStats?: {
+    bench?: number
+    squat?: number
+    deadlift?: number
+    pullUps?: number
+    pushUps?: number
+    videoUrl?: string
+  } | null
 }
 
 // Keep legacy alias so any existing callers still compile
