@@ -132,10 +132,10 @@ export default function LandingPage() {
           <span className="text-lg font-black tracking-tight text-gray-900">Apex</span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-500">
+        <div className="hidden md:flex items-center gap-6 text-sm font-semibold text-gray-600">
           <Link to="/about" className="hover:text-gray-900 transition-colors">About</Link>
-          <Link to="/privacy" className="hover:text-gray-900 transition-colors">Privacy</Link>
-          <Link to="/terms" className="hover:text-gray-900 transition-colors">Terms</Link>
+          <Link to="/register" className="hover:text-gray-900 transition-colors">People</Link>
+          <Link to="/register" className="hover:text-gray-900 transition-colors">Premium</Link>
         </div>
 
         <div className="flex items-center gap-2">
@@ -143,13 +143,13 @@ export default function LandingPage() {
             to="/login"
             className="rounded-full px-4 py-2 text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors"
           >
-            Sign in
+            Log in
           </Link>
           <Link
             to="/register"
             className="rounded-full bg-gradient-to-r from-purple-600 to-violet-600 px-4 py-2 text-sm font-bold text-white shadow-md shadow-purple-200 hover:shadow-purple-300 transition-all hover:scale-[1.02]"
           >
-            Get started
+            Sign up
           </Link>
         </div>
       </nav>
