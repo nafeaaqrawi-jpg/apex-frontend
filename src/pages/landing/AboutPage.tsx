@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowLeft, ArrowRight, GraduationCap, Heart, Sparkles, Target, Users, Zap } from 'lucide-react'
+import { ArrowLeft, ArrowRight, GraduationCap, Heart, Target, Users, Zap } from 'lucide-react'
+import ApexLogo from '../../components/ui/ApexLogo'
 
 const VALUES = [
   {
@@ -36,11 +37,8 @@ export default function AboutPage() {
 
       {/* Nav */}
       <nav className="flex items-center justify-between border-b border-gray-100 px-5 py-4 md:px-10">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-purple-600 to-violet-600 shadow-md shadow-purple-200">
-            <Sparkles size={15} className="text-white" />
-          </div>
-          <span className="text-lg font-black tracking-tight text-gray-900">Apex</span>
+        <Link to="/">
+          <ApexLogo size={28} showText={true} variant="default" />
         </Link>
         <div className="flex items-center gap-2">
           <Link to="/login" className="rounded-full px-4 py-2 text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors">
@@ -149,11 +147,8 @@ export default function AboutPage() {
       {/* Footer */}
       <footer className="border-t border-gray-100 bg-white px-5 py-8 md:px-10">
         <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-4 sm:flex-row">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-gradient-to-br from-purple-600 to-violet-600">
-              <Sparkles size={11} className="text-white" />
-            </div>
-            <span className="text-sm font-black text-gray-900">Apex</span>
+          <Link to="/">
+            <ApexLogo size={22} showText={true} variant="default" />
           </Link>
           <div className="flex flex-wrap justify-center gap-5 text-xs text-gray-500">
             <Link to="/privacy" className="hover:text-gray-900 transition-colors">Privacy Policy</Link>

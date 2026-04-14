@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { ArrowLeft, Sparkles } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
+import ApexLogo from '../ui/ApexLogo'
 
 interface LegalLayoutProps {
   title: string
@@ -21,11 +22,8 @@ export default function LegalLayout({ title, effectiveDate, children }: LegalLay
           >
             <ArrowLeft size={16} className="text-gray-600" />
           </button>
-          <Link to="/" className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-purple-600 to-violet-600 shadow-sm shadow-purple-200">
-              <Sparkles size={13} className="text-white" />
-            </div>
-            <span className="text-sm font-black text-gray-900">Apex</span>
+          <Link to="/">
+            <ApexLogo size={24} showText={true} variant="default" />
           </Link>
         </div>
         <div className="hidden sm:flex items-center gap-5 text-xs font-medium text-gray-500">

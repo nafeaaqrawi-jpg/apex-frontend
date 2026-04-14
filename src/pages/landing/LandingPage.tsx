@@ -9,7 +9,6 @@ import {
   Lock,
   MapPin,
   ShieldCheck,
-  Sparkles,
   Star,
   Zap,
   Quote,
@@ -17,6 +16,7 @@ import {
   Check,
   Heart,
 } from 'lucide-react'
+import ApexLogo from '../../components/ui/ApexLogo'
 
 // ── Ticker items ──────────────────────────────────────────────────────────────
 const TICKER_ITEMS = [
@@ -272,11 +272,8 @@ export default function LandingPage() {
 
       {/* ── Nav ──────────────────────────────────────────────────────────── */}
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 py-4 md:px-10 bg-white/90 backdrop-blur-md border-b border-gray-100">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-purple-600 to-violet-600 shadow-md shadow-purple-200">
-            <Sparkles size={15} className="text-white" />
-          </div>
-          <span className="text-lg font-black tracking-tight text-gray-900">Apex</span>
+        <Link to="/">
+          <ApexLogo size={28} showText={true} variant="default" />
         </Link>
 
         <div className="hidden md:flex items-center gap-6 text-sm font-semibold text-gray-600">
@@ -667,10 +664,7 @@ export default function LandingPage() {
             {/* Brand */}
             <div className="max-w-xs">
               <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-purple-600 to-violet-600 shadow-md shadow-purple-200">
-                  <Sparkles size={15} className="text-white" />
-                </div>
-                <span className="text-lg font-black text-gray-900">Apex</span>
+                <ApexLogo size={28} showText={true} variant="default" />
               </div>
               <p className="mt-3 text-sm leading-relaxed text-gray-500">
                 Where ambition meets authenticity. Built for people who want a partner that keeps up.
