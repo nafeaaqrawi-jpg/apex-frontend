@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import {
   ArrowRight,
   Briefcase,
@@ -15,6 +15,8 @@ import {
   X,
   Check,
   Heart,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react'
 import ApexLogo from '../../components/ui/ApexLogo'
 
@@ -34,7 +36,7 @@ const TICKER_ITEMS = [
   '⭐ Wharton MBA seeking serious relationship',
 ]
 
-// ── Mock profiles for the preview section ────────────────────────────────────
+// ── Mock profiles ─────────────────────────────────────────────────────────────
 const PREVIEW_PROFILES = [
   {
     name: 'Sofia C.',
@@ -89,21 +91,30 @@ const TESTIMONIALS = [
     quote: "I had a real conversation on the first match. That's never happened on Tinder.",
     name: 'Ethan K.',
     school: 'Georgetown \'24',
+    initials: 'EK',
   },
   {
     quote: "The first app where I didn't feel like a profile photo. They actually read my bio.",
     name: 'Priya M.',
     school: 'MIT \'25',
+    initials: 'PM',
   },
   {
     quote: "Met my girlfriend 4 months ago. We both had 'future location: NYC.' The app knew.",
     name: 'James L.',
     school: 'Harvard \'23',
+    initials: 'JL',
+  },
+  {
+    quote: "Worth every second of setup. Profile took 20 minutes, first real date happened in a week.",
+    name: 'Aisha R.',
+    school: 'Wharton \'24',
+    initials: 'AR',
   },
 ]
 
 // ── Stat counter ──────────────────────────────────────────────────────────────
-function StatCounter({ to, label, suffix = '', prefix = '' }: { to: number; label: string; suffix?: string; prefix?: string }) {
+function StatCounter({ to, label, suffix = '' }: { to: number; label: string; suffix?: string }) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true })
   const [count, setCount] = useState(0)
@@ -129,7 +140,7 @@ function StatCounter({ to, label, suffix = '', prefix = '' }: { to: number; labe
   return (
     <div ref={ref} className="text-center">
       <div className="font-display text-4xl font-black text-gray-900 md:text-5xl">
-        {prefix}{count.toLocaleString()}{suffix}
+        {count.toLocaleString()}{suffix}
       </div>
       <div className="mt-2 text-sm font-medium text-gray-500">{label}</div>
     </div>
@@ -137,17 +148,7 @@ function StatCounter({ to, label, suffix = '', prefix = '' }: { to: number; labe
 }
 
 // ── Feature card ──────────────────────────────────────────────────────────────
-function FeatureCard({
-  icon,
-  title,
-  body,
-  delay = 0,
-}: {
-  icon: React.ReactNode
-  title: string
-  body: string
-  delay?: number
-}) {
+function FeatureCard({ icon, title, body, delay = 0 }: { icon: React.ReactNode; title: string; body: string; delay?: number }) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
 
@@ -169,13 +170,7 @@ function FeatureCard({
 }
 
 // ── Profile preview card ──────────────────────────────────────────────────────
-function ProfileCard({
-  profile,
-  delay = 0,
-}: {
-  profile: (typeof PREVIEW_PROFILES)[0]
-  delay?: number
-}) {
+function ProfileCard({ profile, delay = 0 }: { profile: (typeof PREVIEW_PROFILES)[0]; delay?: number }) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-40px' })
 
@@ -185,10 +180,9 @@ function ProfileCard({
       initial={{ opacity: 0, y: 24 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay, ease: 'easeOut' }}
-      whileHover={{ y: -4, transition: { duration: 0.2 } }}
+      whileHover={{ y: -6, transition: { duration: 0.22, ease: 'easeOut' } }}
       className="relative flex-shrink-0 w-64 rounded-[24px] border border-gray-100 bg-white shadow-lg shadow-gray-100/80 overflow-hidden"
     >
-      {/* Photo */}
       <div className="relative h-48 bg-gray-100 overflow-hidden">
         <img
           src={`https://images.unsplash.com/photo-${profile.photoId}?w=300&h=220&fit=crop&crop=face`}
@@ -196,9 +190,7 @@ function ProfileCard({
           className="h-full w-full object-cover"
           loading="lazy"
         />
-        {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-        {/* Verified badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-1.5">
           {profile.verified && (
             <span className="inline-flex items-center gap-1 rounded-full bg-white/90 backdrop-blur-sm px-2 py-0.5 text-[9px] font-bold text-blue-700">
@@ -214,8 +206,6 @@ function ProfileCard({
           )}
         </div>
       </div>
-
-      {/* Info */}
       <div className="p-4">
         <div className="flex items-baseline justify-between mb-1">
           <p className="text-[15px] font-bold text-gray-900">{profile.name}, {profile.age}</p>
@@ -242,12 +232,119 @@ function ProfileCard({
   )
 }
 
+// ── Testimonial carousel ──────────────────────────────────────────────────────
+function TestimonialCarousel() {
+  const [current, setCurrent] = useState(0)
+  const [paused, setPaused] = useState(false)
+  const [direction, setDirection] = useState(1)
+
+  useEffect(() => {
+    if (paused) return
+    const id = setInterval(() => {
+      setDirection(1)
+      setCurrent((c) => (c + 1) % TESTIMONIALS.length)
+    }, 5000)
+    return () => clearInterval(id)
+  }, [paused])
+
+  const go = (idx: number) => {
+    setDirection(idx > current ? 1 : -1)
+    setCurrent(idx)
+  }
+
+  const prev = () => {
+    setDirection(-1)
+    setCurrent((c) => (c - 1 + TESTIMONIALS.length) % TESTIMONIALS.length)
+  }
+
+  const next = () => {
+    setDirection(1)
+    setCurrent((c) => (c + 1) % TESTIMONIALS.length)
+  }
+
+  const variants = {
+    enter: (dir: number) => ({ opacity: 0, x: dir > 0 ? 60 : -60 }),
+    center: { opacity: 1, x: 0 },
+    exit: (dir: number) => ({ opacity: 0, x: dir > 0 ? -60 : 60 }),
+  }
+
+  const t = TESTIMONIALS[current]
+
+  return (
+    <div
+      className="relative mx-auto max-w-2xl"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <div className="overflow-hidden rounded-[24px] bg-white border border-gray-100 shadow-sm px-8 py-10 md:px-12 min-h-[200px] flex flex-col justify-between">
+        <AnimatePresence custom={direction} mode="wait">
+          <motion.div
+            key={current}
+            custom={direction}
+            variants={variants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ duration: 0.38, ease: 'easeOut' }}
+          >
+            <Quote size={28} className="mb-5 text-purple-200" />
+            <p className="text-lg font-medium leading-relaxed text-gray-800 md:text-xl">
+              &ldquo;{t.quote}&rdquo;
+            </p>
+            <div className="mt-6 flex items-center gap-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-violet-600 text-xs font-bold text-white flex-shrink-0">
+                {t.initials}
+              </div>
+              <div>
+                <p className="text-sm font-bold text-gray-900">{t.name}</p>
+                <p className="text-xs text-gray-400">{t.school}</p>
+              </div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {/* Controls */}
+      <div className="mt-5 flex items-center justify-center gap-4">
+        <button
+          onClick={prev}
+          className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-400 hover:text-gray-700 transition-colors"
+        >
+          <ChevronLeft size={15} />
+        </button>
+        <div className="flex gap-1.5">
+          {TESTIMONIALS.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => go(i)}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                i === current ? 'w-6 bg-purple-600' : 'w-1.5 bg-gray-300'
+              }`}
+            />
+          ))}
+        </div>
+        <button
+          onClick={next}
+          className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-400 hover:text-gray-700 transition-colors"
+        >
+          <ChevronRight size={15} />
+        </button>
+      </div>
+    </div>
+  )
+}
+
 // ── Main ──────────────────────────────────────────────────────────────────────
 export default function LandingPage() {
   const [tickerOffset, setTickerOffset] = useState(0)
   const tickerRef = useRef<HTMLDivElement>(null)
   const heroRef = useRef<HTMLDivElement>(null)
   const heroInView = useInView(heroRef, { once: true })
+
+  // Parallax on hero background orbs
+  const { scrollY } = useScroll()
+  const orb1Y = useTransform(scrollY, [0, 600], [0, 80])
+  const orb2Y = useTransform(scrollY, [0, 600], [0, -60])
 
   // Ticker animation
   useEffect(() => {
@@ -266,6 +363,18 @@ export default function LandingPage() {
     animFrame = requestAnimationFrame(step)
     return () => cancelAnimationFrame(animFrame)
   }, [])
+
+  // Word-by-word headline config
+  const line1Words = ['Finally,', 'people']
+  const line2Words = ['worth', 'your', 'time.']
+  const wordVariants = {
+    hidden: { opacity: 0, y: 24 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: 0.1 + i * 0.1, duration: 0.45, ease: 'easeOut' },
+    }),
+  }
 
   return (
     <div className="min-h-screen bg-white text-gray-900 overflow-x-hidden">
@@ -300,44 +409,87 @@ export default function LandingPage() {
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section className="relative flex min-h-screen flex-col items-center justify-center px-5 pt-28 pb-16 text-center">
-        {/* Subtle background gradient */}
+        {/* Parallax background orbs */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 left-1/2 h-[700px] w-[700px] -translate-x-1/2 rounded-full bg-purple-50 opacity-60 blur-[80px]" />
-          <div className="absolute top-1/2 -right-20 h-[400px] w-[400px] rounded-full bg-violet-50 opacity-40 blur-[80px]" />
+          <motion.div
+            style={{ y: orb1Y }}
+            className="absolute -top-40 left-1/2 h-[700px] w-[700px] -translate-x-1/2 rounded-full bg-purple-50 opacity-70 blur-[80px]"
+          />
+          <motion.div
+            style={{ y: orb2Y }}
+            className="absolute top-1/2 -right-20 h-[400px] w-[400px] rounded-full bg-violet-50 opacity-50 blur-[80px]"
+          />
+          {/* Animated gradient accent */}
+          <motion.div
+            animate={{
+              scale: [1, 1.15, 1],
+              opacity: [0.2, 0.35, 0.2],
+            }}
+            transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+            className="absolute bottom-1/4 -left-32 h-[300px] w-[300px] rounded-full bg-purple-100 blur-[60px]"
+          />
         </div>
 
         <div ref={heroRef} className="relative max-w-4xl">
-          {/* Badge */}
+          {/* Floating badge */}
           <motion.div
             initial={{ opacity: 0, y: -8 }}
-            animate={heroInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.4 }}
-            className="mb-5 inline-flex items-center gap-2 rounded-full border border-purple-100 bg-purple-50 px-4 py-2 text-xs font-semibold text-purple-700"
+            animate={heroInView ? {
+              opacity: 1,
+              y: [0, -4, 0],
+              transition: { opacity: { duration: 0.4 }, y: { delay: 0.5, duration: 3, repeat: Infinity, ease: 'easeInOut' } },
+            } : {}}
+            className="mb-6 inline-flex items-center gap-2 rounded-full border border-purple-100 bg-purple-50 px-4 py-2 text-xs font-semibold text-purple-700"
           >
-            <Star size={10} className="fill-purple-500 text-purple-500" />
+            <motion.span
+              animate={{ scale: [1, 1.3, 1] }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              <Star size={10} className="fill-purple-500 text-purple-500" />
+            </motion.span>
             Now live at top universities · Members accepted, not just registered
           </motion.div>
 
-          {/* Headline */}
-          <motion.h1
-            initial={{ opacity: 0, y: 16 }}
-            animate={heroInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.08 }}
-            className="font-display text-5xl font-black leading-[1.05] tracking-tight text-gray-900 md:text-7xl"
-          >
-            Finally, people
-            <br />
-            <span className="bg-gradient-to-r from-purple-600 via-violet-600 to-purple-500 bg-clip-text text-transparent">
-              worth your time.
+          {/* Word-by-word headline */}
+          <h1 className="font-display text-5xl font-black leading-[1.08] tracking-tight text-gray-900 md:text-7xl">
+            <span className="block">
+              {line1Words.map((word, i) => (
+                <motion.span
+                  key={word}
+                  custom={i}
+                  variants={wordVariants}
+                  initial="hidden"
+                  animate={heroInView ? 'visible' : 'hidden'}
+                  className="mr-[0.25em] inline-block"
+                >
+                  {word}
+                </motion.span>
+              ))}
             </span>
-          </motion.h1>
+            <span className="block">
+              {line2Words.map((word, i) => (
+                <motion.span
+                  key={word}
+                  custom={line1Words.length + i}
+                  variants={wordVariants}
+                  initial="hidden"
+                  animate={heroInView ? 'visible' : 'hidden'}
+                  className={`mr-[0.2em] inline-block ${
+                    word === 'time.' ? 'bg-gradient-to-r from-purple-600 via-violet-600 to-purple-500 bg-clip-text text-transparent' : ''
+                  }`}
+                >
+                  {word}
+                </motion.span>
+              ))}
+            </span>
+          </h1>
 
           {/* Sub-headline */}
           <motion.p
             initial={{ opacity: 0, y: 16 }}
             animate={heroInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.16 }}
-            className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-gray-500 md:text-xl"
+            transition={{ duration: 0.5, delay: 0.65 }}
+            className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-gray-500 md:text-xl"
           >
             79% of Gen Z are burned out on dating apps. Apex is what comes next —
             verified real people, compatibility over chemistry, no swiping required.
@@ -347,16 +499,28 @@ export default function LandingPage() {
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={heroInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.24 }}
+            transition={{ duration: 0.5, delay: 0.8 }}
             className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center"
           >
-            <Link
-              to="/register"
-              className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-600 to-violet-600 px-7 py-3.5 text-base font-bold text-white shadow-lg shadow-purple-200 transition-all hover:shadow-purple-300 hover:scale-[1.02]"
+            {/* Glowing primary CTA */}
+            <motion.div
+              animate={{
+                boxShadow: [
+                  '0 0 0 0 rgba(124, 58, 237, 0.4)',
+                  '0 0 0 14px rgba(124, 58, 237, 0)',
+                ],
+              }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'easeOut' }}
+              className="rounded-full"
             >
-              Check your eligibility
-              <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
-            </Link>
+              <Link
+                to="/register"
+                className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-600 to-violet-600 px-7 py-3.5 text-base font-bold text-white shadow-lg shadow-purple-200 transition-all hover:shadow-purple-300 hover:scale-[1.02]"
+              >
+                Check your eligibility
+                <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+              </Link>
+            </motion.div>
             <Link
               to="/login"
               className="flex items-center gap-2 rounded-full border border-gray-200 bg-white px-7 py-3.5 text-base font-semibold text-gray-700 transition-all hover:border-gray-300 hover:shadow-sm"
@@ -368,7 +532,7 @@ export default function LandingPage() {
           <motion.p
             initial={{ opacity: 0 }}
             animate={heroInView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.4 }}
+            transition={{ duration: 0.5, delay: 1 }}
             className="mt-4 text-xs text-gray-400"
           >
             Free to join · No credit card required · Verified profiles only
@@ -415,7 +579,6 @@ export default function LandingPage() {
           Not curated photos and a two-word bio. Real credentials, real ambition, real people.
         </p>
 
-        {/* Scrollable card row */}
         <div className="flex gap-5 overflow-x-auto pb-4 justify-center flex-wrap md:flex-nowrap md:overflow-visible">
           {PREVIEW_PROFILES.map((profile, i) => (
             <ProfileCard key={profile.name} profile={profile} delay={i * 0.1} />
@@ -513,7 +676,6 @@ export default function LandingPage() {
             transition={{ duration: 0.5 }}
             className="rounded-[24px] border border-gray-200 bg-white overflow-hidden shadow-sm"
           >
-            {/* Header row */}
             <div className="grid grid-cols-3 border-b border-gray-100">
               <div className="px-5 py-4 text-xs font-bold uppercase tracking-[0.2em] text-gray-400" />
               <div className="border-x border-gray-100 px-5 py-4 text-center text-xs font-semibold text-gray-400">
@@ -590,42 +752,25 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── Testimonials ─────────────────────────────────────────────────── */}
-      <section className="border-y border-gray-100 bg-gray-50 py-24">
-        <div className="mx-auto max-w-5xl px-6">
-          <div className="mb-3 text-center">
-            <span className="text-xs font-bold uppercase tracking-[0.25em] text-purple-600">What members say</span>
-          </div>
-          <h2 className="mb-14 text-center font-display text-3xl font-black text-gray-900 md:text-4xl">
-            The contrast is real.
-          </h2>
-
-          <div className="grid gap-5 md:grid-cols-3">
-            {TESTIMONIALS.map(({ quote, name, school }, i) => (
-              <motion.div
-                key={name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{ duration: 0.45, delay: i * 0.1 }}
-                className="rounded-[20px] bg-white border border-gray-100 p-6 shadow-sm"
-              >
-                <Quote size={20} className="mb-4 text-purple-200" />
-                <p className="text-sm leading-relaxed text-gray-700 font-medium">&ldquo;{quote}&rdquo;</p>
-                <div className="mt-4 pt-4 border-t border-gray-100">
-                  <p className="text-sm font-bold text-gray-900">{name}</p>
-                  <p className="text-xs text-gray-400">{school}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+      {/* ── Testimonials carousel ─────────────────────────────────────────── */}
+      <section className="border-y border-gray-100 bg-gray-50 py-24 px-6">
+        <div className="mb-3 text-center">
+          <span className="text-xs font-bold uppercase tracking-[0.25em] text-purple-600">What members say</span>
         </div>
+        <h2 className="mb-12 text-center font-display text-3xl font-black text-gray-900 md:text-4xl">
+          The contrast is real.
+        </h2>
+        <TestimonialCarousel />
       </section>
 
       {/* ── CTA banner ───────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-t border-gray-100 bg-gradient-to-br from-purple-600 via-violet-600 to-purple-700 px-6 py-24 text-center">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute left-1/2 top-1/2 h-[500px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/8 blur-[80px]" />
+          <motion.div
+            animate={{ scale: [1, 1.2, 1], opacity: [0.06, 0.12, 0.06] }}
+            transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+            className="absolute left-1/2 top-1/2 h-[500px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white blur-[80px]"
+          />
         </div>
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -641,13 +786,24 @@ export default function LandingPage() {
           <p className="mx-auto mt-5 max-w-md text-base leading-relaxed text-white/80">
             Stop settling for apps built for everyone. Apex is built for people who take their future seriously.
           </p>
-          <Link
-            to="/register"
-            className="group mt-8 inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-base font-bold text-purple-700 shadow-xl transition-all hover:scale-[1.02] hover:shadow-2xl"
+          <motion.div
+            animate={{
+              boxShadow: [
+                '0 0 0 0 rgba(255,255,255,0.3)',
+                '0 0 0 18px rgba(255,255,255,0)',
+              ],
+            }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: 'easeOut' }}
+            className="mt-8 inline-block rounded-full"
           >
-            Apply to join Apex — it&apos;s free
-            <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
-          </Link>
+            <Link
+              to="/register"
+              className="group inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-base font-bold text-purple-700 shadow-xl transition-all hover:scale-[1.02] hover:shadow-2xl"
+            >
+              Apply to join Apex — it&apos;s free
+              <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
+            </Link>
+          </motion.div>
           <p className="mt-4 text-xs text-white/60">
             By creating an account you agree to our{' '}
             <Link to="/terms" className="underline underline-offset-2 hover:text-white">Terms of Service</Link>
@@ -661,17 +817,13 @@ export default function LandingPage() {
       <footer className="border-t border-gray-100 bg-white px-6 py-12 md:px-10">
         <div className="mx-auto max-w-5xl">
           <div className="flex flex-col gap-10 md:flex-row md:justify-between">
-            {/* Brand */}
             <div className="max-w-xs">
-              <div className="flex items-center gap-2">
-                <ApexLogo size={28} showText={true} variant="default" />
-              </div>
+              <ApexLogo size={28} showText={true} variant="default" />
               <p className="mt-3 text-sm leading-relaxed text-gray-500">
                 Where ambition meets authenticity. Built for people who want a partner that keeps up.
               </p>
             </div>
 
-            {/* Links */}
             <div className="grid grid-cols-2 gap-10 sm:grid-cols-3">
               <div>
                 <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-gray-400">Product</p>
