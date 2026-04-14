@@ -1,31 +1,9 @@
-import { useNavigate } from 'react-router-dom'
-import { ArrowLeft } from 'lucide-react'
+import LegalLayout from '../../components/layout/LegalLayout'
 
 export default function PrivacyPage() {
-  const navigate = useNavigate()
-
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <div className="sticky top-0 z-10 bg-white border-b border-gray-100 px-5 py-4 flex items-center gap-3">
-        <button
-          onClick={() => navigate(-1)}
-          className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors flex-shrink-0"
-        >
-          <ArrowLeft size={17} className="text-gray-600" />
-        </button>
-        <h1 className="text-base font-bold text-gray-900">Privacy Policy</h1>
-      </div>
-
-      {/* Content */}
-      <div className="max-w-2xl mx-auto px-5 py-8">
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Privacy Policy</h2>
-          <p className="text-sm text-gray-500">Effective Date: April 1, 2026</p>
-          <p className="text-sm text-gray-500">Last Updated: April 1, 2026</p>
-        </div>
-
-        <div className="flex flex-col gap-8">
+    <LegalLayout title="Privacy Policy" effectiveDate="April 1, 2026">
+      <div className="flex flex-col gap-8 text-zinc-400 [&_h3]:text-white [&_h3]:font-bold [&_h3]:text-base [&_h3]:mt-2 [&_h4]:text-zinc-200 [&_h4]:font-semibold [&_h4]:text-sm [&_p]:text-sm [&_p]:leading-relaxed [&_ul]:text-sm [&_ul]:leading-relaxed [&_li]:mt-1">
 
           {/* 1. Introduction */}
           <section>
@@ -279,14 +257,12 @@ export default function PrivacyPage() {
             </div>
           </section>
 
-        </div>
-
-        <div className="mt-10 pt-6 border-t border-gray-100">
-          <p className="text-xs text-gray-400 text-center">
+        <div className="mt-10 pt-6 border-t border-white/8">
+          <p className="text-xs text-zinc-600 text-center">
             &copy; {new Date().getFullYear()} Apex Technologies Inc. All rights reserved.
           </p>
         </div>
       </div>
-    </div>
+    </LegalLayout>
   )
 }

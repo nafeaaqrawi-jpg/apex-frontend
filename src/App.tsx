@@ -28,6 +28,10 @@ import TermsPage from './pages/legal/TermsPage'
 import PrivacyPage from './pages/legal/PrivacyPage'
 import CommunityGuidelinesPage from './pages/legal/CommunityGuidelinesPage'
 
+// Landing / marketing
+import LandingPage from './pages/landing/LandingPage'
+import AboutPage from './pages/landing/AboutPage'
+
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth()
 
@@ -49,7 +53,7 @@ function RootRedirect() {
   const { isAuthenticated, isLoading, user } = useAuth()
 
   if (isLoading) return <FullPageSpinner />
-  if (!isAuthenticated) return <Navigate to="/login" replace />
+  if (!isAuthenticated) return <LandingPage />
   if (!user?.isProfileComplete) return <Navigate to="/onboarding" replace />
   return <Navigate to="/discover" replace />
 }
@@ -153,6 +157,9 @@ export default function App() {
           </ProtectedRoute>
         }
       />
+
+      {/* Public marketing routes */}
+      <Route path="/about" element={<AboutPage />} />
 
       {/* Legal — public routes */}
       <Route path="/terms" element={<TermsPage />} />
