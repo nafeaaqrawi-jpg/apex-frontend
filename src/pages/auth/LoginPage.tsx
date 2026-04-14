@@ -47,7 +47,13 @@ export default function LoginPage() {
 
   return (
     <AuthLayout title="Welcome back" subtitle="Good to see you again.">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <motion.form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-4"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
+      >
         <Input
           label="Email"
           type="email"
@@ -114,7 +120,7 @@ export default function LoginPage() {
             Join Apex
           </Link>
         </p>
-      </form>
+      </motion.form>
     </AuthLayout>
   )
 }

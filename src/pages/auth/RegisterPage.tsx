@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Mail, Lock, User, Eye, EyeOff } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 import AuthLayout from '../../components/layout/AuthLayout'
 import Input from '../../components/ui/Input'
 import Button from '../../components/ui/Button'
@@ -69,7 +70,13 @@ export default function RegisterPage() {
       title="Join Apex"
       subtitle="Where intellectual curiosity meets genuine connection."
     >
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <motion.form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-4"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
+      >
         <div className="grid grid-cols-2 gap-3">
           <Input
             label="First name"
@@ -123,9 +130,19 @@ export default function RegisterPage() {
           autoComplete="new-password"
         />
 
-        {error && (
-          <p className="text-xs text-red-500 font-medium">{error}</p>
-        )}
+        <AnimatePresence>
+          {error && (
+            <motion.p
+              className="text-xs text-red-500 font-medium"
+              initial={{ opacity: 0, x: 0 }}
+              animate={{ opacity: 1, x: [0, -8, 8, -6, 6, 0] }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+            >
+              {error}
+            </motion.p>
+          )}
+        </AnimatePresence>
 
         <Button type="submit" loading={loading} fullWidth size="lg" className="mt-1">
           Join Apex
@@ -140,7 +157,7 @@ export default function RegisterPage() {
             Enter Apex
           </Link>
         </p>
-      </form>
+      </motion.form>
     </AuthLayout>
   )
 }
