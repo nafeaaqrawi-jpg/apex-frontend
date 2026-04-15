@@ -4,15 +4,15 @@ import { motion, useInView, AnimatePresence, useScroll, useTransform } from 'fra
 import {
   ArrowRight,
   Briefcase,
+  Camera,
   CheckCircle2,
   GraduationCap,
+  Mail,
   MapPin,
   ShieldCheck,
   Star,
   Zap,
   Quote,
-  X,
-  Check,
   Heart,
   ChevronLeft,
   ChevronRight,
@@ -23,18 +23,18 @@ import ApexLogo from '../../components/ui/ApexLogo'
 
 // ── Ticker items ───────────────────────────────────────────────────────────────
 const TICKER_ITEMS = [
-  "🎓 Harvard '25 just joined — Pre-med",
-  '🔗 Two Stanford engineers connected',
-  '🏙️ 14 new profiles from NYC this week',
-  '✅ 2,400+ identity-verified members',
-  '💼 McKinsey analyst seeking long-term',
-  '🌍 Match made: Chicago → NYC move',
-  '🏆 3.9 GPA · Georgetown Law hopeful',
-  '🔥 18 new connections made today',
-  '🎯 Columbia pre-med joined — Moving to Boston',
-  '✈️ NYC → SF relocation match made',
-  "📚 MIT '25 thesis complete — Now dating",
-  '⭐ Wharton MBA seeking serious relationship',
+  "Harvard '25 · Pre-med just joined",
+  'Two Stanford engineers connected',
+  '14 new profiles from NYC this week',
+  '2,400+ identity-verified members',
+  'McKinsey analyst · Seeking long-term',
+  'Match made: Chicago → NYC relocation',
+  '3.9 GPA · Georgetown Law candidate',
+  '18 new connections made today',
+  'Columbia pre-med · Moving to Boston',
+  'NYC → SF relocation match made',
+  "MIT '25 thesis complete",
+  'Wharton MBA · Serious relationship',
 ]
 
 // ── Mock profiles ──────────────────────────────────────────────────────────────
@@ -61,7 +61,7 @@ const PREVIEW_PROFILES = [
     verified: true,
     schoolVerified: true,
     location: 'NYC',
-    photoId: '1472099645785-5658abf4ff4e',
+    photoId: '1507003211169-0a1dd7228f2d',
   },
   {
     name: 'Priya S.',
@@ -423,7 +423,7 @@ export default function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen overflow-x-hidden" style={{ background: '#07040f' }}>
+    <div className="min-h-screen overflow-x-hidden" style={{ background: '#0d0521' }}>
 
       {/* ── Nav ──────────────────────────────────────────────────────────── */}
       <nav
@@ -479,7 +479,7 @@ export default function LandingPage() {
                 : 'bg-white text-purple-700 shadow-lg shadow-white/10'
             }`}
           >
-            Apply to join
+            Join free
           </Link>
         </div>
       </nav>
@@ -487,21 +487,21 @@ export default function LandingPage() {
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section
         className="relative flex min-h-screen flex-col items-center justify-center px-5 pt-28 pb-20 text-center overflow-hidden"
-        style={{ background: 'linear-gradient(160deg, #07040f 0%, #0d0a1a 38%, #1e0f4e 68%, #3b1680 100%)' }}
+        style={{ background: 'linear-gradient(160deg, #0d0521 0%, #1a0845 30%, #3b1680 62%, #6d28d9 88%, #7c3aed 100%)' }}
       >
         {/* Parallax orbs */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           <motion.div
             style={{
               y: orb1Y,
-              background: 'radial-gradient(circle, rgba(124,58,237,0.55) 0%, transparent 70%)',
+              background: 'radial-gradient(circle, rgba(139,92,246,0.7) 0%, transparent 70%)',
             }}
             className="absolute -top-40 left-1/2 h-[700px] w-[700px] -translate-x-1/2 rounded-full blur-[100px]"
           />
           <motion.div
             style={{
               y: orb2Y,
-              background: 'radial-gradient(circle, rgba(167,139,250,0.35) 0%, transparent 70%)',
+              background: 'radial-gradient(circle, rgba(192,132,252,0.5) 0%, transparent 70%)',
             }}
             className="absolute top-1/3 -right-20 h-[500px] w-[500px] rounded-full blur-[90px]"
           />
@@ -634,7 +634,7 @@ export default function LandingPage() {
             transition={{ duration: 0.5, delay: 1.1 }}
             className="mt-4 text-xs text-white/28"
           >
-            Free to join · No credit card required · Verified profiles only
+            Join free · No credit card · Verified members only
           </motion.p>
         </div>
 
@@ -646,8 +646,9 @@ export default function LandingPage() {
             style={{ transform: `translateX(-${tickerOffset}px)`, willChange: 'transform' }}
           >
             {[...TICKER_ITEMS, ...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => (
-              <span key={i} className="text-xs font-medium text-white/45">
+              <span key={i} className="inline-flex items-center gap-8 text-xs font-medium text-white/45 flex-shrink-0">
                 {item}
+                <span className="text-white/15">·</span>
               </span>
             ))}
           </div>
@@ -655,7 +656,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── Stats ── (dark) ───────────────────────────────────────────────── */}
-      <section style={{ background: '#07040f' }} className="border-y border-white/[0.05] py-16">
+      <section style={{ background: '#0f0826' }} className="border-y border-white/[0.06] py-16">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -671,7 +672,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── Profile preview ── (white) ────────────────────────────────────── */}
-      <section className="bg-white px-6 py-24">
+      <section className="px-6 py-24" style={{ background: 'linear-gradient(180deg, #f5f0ff 0%, #ffffff 60%)' }}>
         <div className="mx-auto max-w-5xl">
           <div className="mb-3 text-center">
             <span className="text-xs font-bold uppercase tracking-[0.25em] text-purple-600">
@@ -855,42 +856,28 @@ export default function LandingPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="rounded-[24px] border border-gray-200 bg-white overflow-hidden shadow-sm"
+            className="grid grid-cols-2 gap-4 max-w-2xl mx-auto"
           >
-            <div className="grid grid-cols-3 border-b border-gray-100">
-              <div className="px-5 py-4 text-xs font-bold uppercase tracking-[0.2em] text-gray-400" />
-              <div className="border-x border-gray-100 px-5 py-4 text-center text-xs font-semibold text-gray-400">
-                Other apps
-              </div>
-              <div className="bg-purple-50 px-5 py-4 text-center text-xs font-bold text-purple-700 uppercase tracking-[0.15em]">
-                Apex ✦
-              </div>
+            {/* Other apps column */}
+            <div className="rounded-[24px] border border-gray-200 bg-white p-6 shadow-sm">
+              <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-gray-300 mb-6">Other apps</p>
+              {COMPARISON_ROWS.map(({ label, others }, i) => (
+                <div key={label} className={`py-3.5 ${i < COMPARISON_ROWS.length - 1 ? 'border-b border-gray-100' : ''}`}>
+                  <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-gray-300 mb-0.5">{label}</p>
+                  <p className="text-sm text-gray-400">{others}</p>
+                </div>
+              ))}
             </div>
-
-            {COMPARISON_ROWS.map(({ label, others, apex }, i) => (
-              <motion.div
-                key={label}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.06 }}
-                className={`grid grid-cols-3 ${i < COMPARISON_ROWS.length - 1 ? 'border-b border-gray-100' : ''}`}
-              >
-                <div className="px-5 py-4 text-sm font-semibold text-gray-700">{label}</div>
-                <div className="border-x border-gray-100 px-5 py-4 text-center">
-                  <span className="inline-flex items-center gap-1.5 text-sm text-gray-400">
-                    <X size={13} className="text-red-400 flex-shrink-0" />
-                    {others}
-                  </span>
+            {/* Apex column */}
+            <div className="rounded-[24px] bg-gradient-to-br from-purple-600 to-violet-700 p-6 shadow-xl shadow-purple-900/30">
+              <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/50 mb-6">Apex ✦</p>
+              {COMPARISON_ROWS.map(({ label, apex }, i) => (
+                <div key={label} className={`py-3.5 ${i < COMPARISON_ROWS.length - 1 ? 'border-b border-white/10' : ''}`}>
+                  <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-white/40 mb-0.5">{label}</p>
+                  <p className="text-sm font-semibold text-white">{apex}</p>
                 </div>
-                <div className="bg-purple-50/50 px-5 py-4 text-center">
-                  <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-purple-700">
-                    <Check size={13} className="text-purple-500 flex-shrink-0" />
-                    {apex}
-                  </span>
-                </div>
-              </motion.div>
-            ))}
+              ))}
+            </div>
           </motion.div>
         </div>
       </section>
@@ -914,33 +901,28 @@ export default function LandingPage() {
             Every profile goes through our credibility layer before becoming visible.
           </p>
 
-          <div className="mx-auto max-w-2xl rounded-[24px] border border-gray-100 bg-white p-8 shadow-sm">
+          <div className="mx-auto max-w-3xl grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
             {[
-              { label: 'Email verification', desc: 'Every account verified by email before accessing the app' },
-              { label: 'Photo verification', desc: 'Real selfie required during profile setup — no stolen photos' },
-              { label: 'ID verification (optional)', desc: 'Submit a government ID for the Apex Verified badge' },
-              {
-                label: 'School email verification',
-                desc: 'Use a .edu email to unlock your Verified Student badge automatically',
-              },
-              {
-                label: 'Credential showcase',
-                desc: 'GPA, SAT, ACT, career, strength stats — own your achievements',
-              },
-            ].map(({ label, desc }, i) => (
+              { icon: <Mail size={16} />, label: 'Email verification', desc: 'Every account confirmed by email before accessing the app' },
+              { icon: <Camera size={16} />, label: 'Photo verification', desc: 'Real selfie required during setup — no stolen photos' },
+              { icon: <ShieldCheck size={16} />, label: 'ID verification', desc: 'Submit a government ID for the Apex Verified badge' },
+              { icon: <GraduationCap size={16} />, label: 'School email', desc: '.edu email instantly unlocks your Verified Student badge' },
+              { icon: <Star size={16} />, label: 'Credential showcase', desc: 'GPA, SAT, ACT, career, strength — own your achievements' },
+              { icon: <CheckCircle2 size={16} />, label: 'Curated acceptance', desc: 'Profiles reviewed before going live — quality over quantity' },
+            ].map(({ icon, label, desc }, i) => (
               <motion.div
                 key={label}
-                initial={{ opacity: 0, x: -24 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.07 }}
-                className={`flex items-start gap-4 ${i > 0 ? 'mt-5 pt-5 border-t border-gray-100' : ''}`}
+                className="rounded-2xl border border-purple-100 bg-purple-50 p-5"
               >
-                <CheckCircle2 size={17} className="mt-0.5 flex-shrink-0 text-emerald-500" />
-                <div>
-                  <p className="text-sm font-semibold text-gray-900">{label}</p>
-                  <p className="mt-0.5 text-xs leading-relaxed text-gray-500">{desc}</p>
+                <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-purple-100 text-purple-600">
+                  {icon}
                 </div>
+                <p className="text-sm font-semibold text-gray-900 mb-1">{label}</p>
+                <p className="text-xs leading-relaxed text-gray-500">{desc}</p>
               </motion.div>
             ))}
           </div>
@@ -1014,7 +996,7 @@ export default function LandingPage() {
               to="/register"
               className="group inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-base font-bold text-purple-700 shadow-xl transition-all hover:scale-[1.02] hover:shadow-2xl"
             >
-              Apply to join Apex — it&apos;s free
+              Join Apex — it&apos;s free
               <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
             </Link>
           </motion.div>
@@ -1076,6 +1058,9 @@ export default function LandingPage() {
                   <Link to="/about" className="text-sm text-white/55 transition-colors hover:text-white">
                     About
                   </Link>
+                  <Link to="/careers" className="text-sm text-white/55 transition-colors hover:text-white">
+                    Careers
+                  </Link>
                 </div>
               </div>
               <div>
@@ -1084,7 +1069,7 @@ export default function LandingPage() {
                 </p>
                 <div className="flex flex-col gap-3.5">
                   <a
-                    href="mailto:hello@apex-social.com"
+                    href="mailto:hello@tryapextoday.com"
                     className="text-sm text-white/55 transition-colors hover:text-white"
                   >
                     Contact us

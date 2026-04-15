@@ -22,6 +22,7 @@ import UserProfilePage from './pages/app/UserProfilePage'
 import RizzAssistPage from './pages/app/RizzAssistPage'
 import PremiumPage from './pages/app/PremiumPage'
 import SettingsPage from './pages/app/SettingsPage'
+import AgentsPage from './pages/app/AgentsPage'
 
 // Legal pages
 import TermsPage from './pages/legal/TermsPage'
@@ -31,6 +32,7 @@ import CommunityGuidelinesPage from './pages/legal/CommunityGuidelinesPage'
 // Landing / marketing
 import LandingPage from './pages/landing/LandingPage'
 import AboutPage from './pages/landing/AboutPage'
+import CareersPage from './pages/landing/CareersPage'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth()
@@ -107,6 +109,14 @@ export default function App() {
         }
       />
       <Route
+        path="/agents"
+        element={
+          <ProtectedRoute>
+            <AgentsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/matches"
         element={
           <ProtectedRoute>
@@ -160,6 +170,7 @@ export default function App() {
 
       {/* Public marketing routes */}
       <Route path="/about" element={<AboutPage />} />
+      <Route path="/careers" element={<CareersPage />} />
 
       {/* Legal — public routes */}
       <Route path="/terms" element={<TermsPage />} />
