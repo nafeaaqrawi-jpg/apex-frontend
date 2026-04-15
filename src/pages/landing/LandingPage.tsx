@@ -6,7 +6,6 @@ import {
   Briefcase,
   CheckCircle2,
   GraduationCap,
-  Lock,
   MapPin,
   ShieldCheck,
   Star,
@@ -17,6 +16,8 @@ import {
   Heart,
   ChevronLeft,
   ChevronRight,
+  Instagram,
+  Twitter,
 } from 'lucide-react'
 import ApexLogo from '../../components/ui/ApexLogo'
 
@@ -155,9 +156,9 @@ function FeatureCard({ icon, title, body, delay = 0 }: { icon: React.ReactNode; 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 36 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.45, delay, ease: 'easeOut' }}
+      transition={{ duration: 0.6, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
       className="group rounded-[20px] border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md hover:border-purple-100 transition-all duration-200"
     >
       <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-purple-50 text-purple-600">
@@ -177,9 +178,9 @@ function ProfileCard({ profile, delay = 0 }: { profile: (typeof PREVIEW_PROFILES
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 24 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay, ease: 'easeOut' }}
+      initial={{ opacity: 0, y: 40, scale: 0.95 }}
+      animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
+      transition={{ duration: 0.6, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
       whileHover={{ y: -6, transition: { duration: 0.22, ease: 'easeOut' } }}
       className="relative flex-shrink-0 w-64 rounded-[24px] border border-gray-100 bg-white shadow-lg shadow-gray-100/80 overflow-hidden"
     >
@@ -263,9 +264,9 @@ function TestimonialCarousel() {
   }
 
   const variants = {
-    enter: (dir: number) => ({ opacity: 0, x: dir > 0 ? 60 : -60 }),
+    enter: (dir: number) => ({ opacity: 0, x: dir > 0 ? 90 : -90 }),
     center: { opacity: 1, x: 0 },
-    exit: (dir: number) => ({ opacity: 0, x: dir > 0 ? -60 : 60 }),
+    exit: (dir: number) => ({ opacity: 0, x: dir > 0 ? -90 : 90 }),
   }
 
   const t = TESTIMONIALS[current]
@@ -285,7 +286,7 @@ function TestimonialCarousel() {
             initial="enter"
             animate="center"
             exit="exit"
-            transition={{ duration: 0.38, ease: 'easeOut' }}
+            transition={{ duration: 0.48, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
             <Quote size={28} className="mb-5 text-purple-200" />
             <p className="text-lg font-medium leading-relaxed text-gray-800 md:text-xl">
@@ -368,11 +369,11 @@ export default function LandingPage() {
   const line1Words = ['Finally,', 'people']
   const line2Words = ['worth', 'your', 'time.']
   const wordVariants = {
-    hidden: { opacity: 0, y: 24 },
+    hidden: { opacity: 0, y: 40 },
     visible: (i: number) => ({
       opacity: 1,
       y: 0,
-      transition: { delay: 0.1 + i * 0.1, duration: 0.45, ease: 'easeOut' },
+      transition: { delay: 0.15 + i * 0.13, duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
     }),
   }
 
@@ -557,12 +558,18 @@ export default function LandingPage() {
 
       {/* ── Stats ────────────────────────────────────────────────────────── */}
       <section className="border-y border-gray-100 bg-gray-50 py-14">
-        <div className="mx-auto grid max-w-4xl grid-cols-2 gap-8 px-8 md:grid-cols-4">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="mx-auto grid max-w-4xl grid-cols-2 gap-8 px-8 md:grid-cols-4"
+        >
           <StatCounter to={2400} suffix="+" label="Verified members" />
           <StatCounter to={47} suffix="+" label="Universities represented" />
           <StatCounter to={84} suffix="%" label="Report better quality matches" />
           <StatCounter to={27} suffix="%" label="Of US marriages start on apps" />
-        </div>
+        </motion.div>
       </section>
 
       {/* ── Profile preview ───────────────────────────────────────────────── */}
@@ -570,11 +577,17 @@ export default function LandingPage() {
         <div className="mb-3 text-center">
           <span className="text-xs font-bold uppercase tracking-[0.25em] text-purple-600">Who you&apos;ll meet</span>
         </div>
-        <h2 className="mb-4 text-center font-display text-3xl font-black text-gray-900 md:text-5xl">
+        <motion.h2
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="mb-4 text-center font-display text-3xl font-black text-gray-900 md:text-5xl"
+        >
           This is what
           <br />
           <span className="text-gray-400">an Apex profile looks like.</span>
-        </h2>
+        </motion.h2>
         <p className="mx-auto mb-12 max-w-md text-center text-sm leading-relaxed text-gray-500">
           Not curated photos and a two-word bio. Real credentials, real ambition, real people.
         </p>
@@ -602,11 +615,17 @@ export default function LandingPage() {
           <div className="mb-3 text-center">
             <span className="text-xs font-bold uppercase tracking-[0.25em] text-purple-600">Who it&apos;s for</span>
           </div>
-          <h2 className="mb-14 text-center font-display text-3xl font-black text-gray-900 md:text-5xl">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="mb-14 text-center font-display text-3xl font-black text-gray-900 md:text-5xl"
+          >
             Apex is for people who
             <br />
             <span className="text-gray-400">want more than a swipe.</span>
-          </h2>
+          </motion.h2>
 
           <div className="grid gap-4 md:grid-cols-3">
             <FeatureCard delay={0} icon={<GraduationCap size={20} />} title="Top students & graduates"
@@ -630,11 +649,17 @@ export default function LandingPage() {
         <div className="mb-3 text-center">
           <span className="text-xs font-bold uppercase tracking-[0.25em] text-purple-600">How it works</span>
         </div>
-        <h2 className="mb-14 text-center font-display text-3xl font-black text-gray-900 md:text-5xl">
+        <motion.h2
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="mb-14 text-center font-display text-3xl font-black text-gray-900 md:text-5xl"
+        >
           Three steps to your
           <br />
           <span className="text-gray-400">intellectual match.</span>
-        </h2>
+        </motion.h2>
 
         <div className="grid gap-12 md:grid-cols-3">
           {[
@@ -644,10 +669,10 @@ export default function LandingPage() {
           ].map(({ step, title, body }, i) => (
             <motion.div
               key={step}
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 36 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.45, delay: i * 0.1 }}
+              transition={{ duration: 0.65, delay: i * 0.1 }}
             >
               <div className="mb-3 font-display text-6xl font-black text-gray-100">{step}</div>
               <h3 className="mb-2 text-lg font-bold text-gray-900">{title}</h3>
@@ -663,17 +688,23 @@ export default function LandingPage() {
           <div className="mb-3 text-center">
             <span className="text-xs font-bold uppercase tracking-[0.25em] text-purple-600">The difference</span>
           </div>
-          <h2 className="mb-12 text-center font-display text-3xl font-black text-gray-900 md:text-5xl">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="mb-12 text-center font-display text-3xl font-black text-gray-900 md:text-5xl"
+          >
             This is not
             <br />
             <span className="text-gray-400">another dating app.</span>
-          </h2>
+          </motion.h2>
 
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 28 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="rounded-[24px] border border-gray-200 bg-white overflow-hidden shadow-sm"
           >
             <div className="grid grid-cols-3 border-b border-gray-100">
@@ -689,10 +720,10 @@ export default function LandingPage() {
             {COMPARISON_ROWS.map(({ label, others, apex }, i) => (
               <motion.div
                 key={label}
-                initial={{ opacity: 0, x: -8 }}
+                initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.35, delay: i * 0.06 }}
+                transition={{ duration: 0.5, delay: i * 0.06 }}
                 className={`grid grid-cols-3 ${i < COMPARISON_ROWS.length - 1 ? 'border-b border-gray-100' : ''}`}
               >
                 <div className="px-5 py-4 text-sm font-semibold text-gray-700">{label}</div>
@@ -719,9 +750,15 @@ export default function LandingPage() {
         <div className="mb-3 text-center">
           <span className="text-xs font-bold uppercase tracking-[0.25em] text-purple-600">The standard</span>
         </div>
-        <h2 className="mb-4 text-center font-display text-3xl font-black text-gray-900 md:text-5xl">
+        <motion.h2
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="mb-4 text-center font-display text-3xl font-black text-gray-900 md:text-5xl"
+        >
           Curated, not crowdsourced.
-        </h2>
+        </motion.h2>
         <p className="mx-auto mb-12 max-w-xl text-center text-base leading-relaxed text-gray-500">
           Every profile goes through our credibility layer before becoming visible.
         </p>
@@ -736,10 +773,10 @@ export default function LandingPage() {
           ].map(({ label, desc }, i) => (
             <motion.div
               key={label}
-              initial={{ opacity: 0, x: -10 }}
+              initial={{ opacity: 0, x: -24 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.35, delay: i * 0.07 }}
+              transition={{ duration: 0.5, delay: i * 0.07 }}
               className={`flex items-start gap-4 ${i > 0 ? 'mt-5 pt-5 border-t border-gray-100' : ''}`}
             >
               <CheckCircle2 size={17} className="mt-0.5 flex-shrink-0 text-emerald-500" />
@@ -757,9 +794,15 @@ export default function LandingPage() {
         <div className="mb-3 text-center">
           <span className="text-xs font-bold uppercase tracking-[0.25em] text-purple-600">What members say</span>
         </div>
-        <h2 className="mb-12 text-center font-display text-3xl font-black text-gray-900 md:text-4xl">
+        <motion.h2
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="mb-12 text-center font-display text-3xl font-black text-gray-900 md:text-4xl"
+        >
           The contrast is real.
-        </h2>
+        </motion.h2>
         <TestimonialCarousel />
       </section>
 
@@ -779,9 +822,19 @@ export default function LandingPage() {
           transition={{ duration: 0.5 }}
           className="relative mx-auto max-w-2xl"
         >
-          <h2 className="font-display text-4xl font-black text-white md:text-6xl">
-            Your person is
-            <br />already here.
+          <h2 className="font-display text-4xl font-black text-white md:text-6xl leading-tight">
+            {['Your', 'person', 'is', 'already', 'here.'].map((word, i) => (
+              <motion.span
+                key={word}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.55, delay: i * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+                className="mr-[0.25em] inline-block"
+              >
+                {word}
+              </motion.span>
+            ))}
           </h2>
           <p className="mx-auto mt-5 max-w-md text-base leading-relaxed text-white/80">
             Stop settling for apps built for everyone. Apex is built for people who take their future seriously.
@@ -814,48 +867,71 @@ export default function LandingPage() {
       </section>
 
       {/* ── Footer ───────────────────────────────────────────────────────── */}
-      <footer className="border-t border-gray-100 bg-white px-6 py-12 md:px-10">
+      <footer style={{ background: '#0a0614' }} className="px-8 py-16 md:px-12">
         <div className="mx-auto max-w-5xl">
-          <div className="flex flex-col gap-10 md:flex-row md:justify-between">
+          {/* Top row */}
+          <div className="flex flex-col gap-12 md:flex-row md:justify-between">
+            {/* Left: brand */}
             <div className="max-w-xs">
-              <ApexLogo size={28} showText={true} variant="default" />
-              <p className="mt-3 text-sm leading-relaxed text-gray-500">
+              <ApexLogo size={32} showText={true} variant="white" />
+              <p className="mt-4 text-sm leading-relaxed text-white/45">
                 Where ambition meets authenticity. Built for people who want a partner that keeps up.
               </p>
+              <div className="mt-6 flex items-center gap-3">
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-white/45 transition-colors hover:border-white/30 hover:text-white"
+                >
+                  <Instagram size={15} />
+                </a>
+                <a
+                  href="https://twitter.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-white/45 transition-colors hover:border-white/30 hover:text-white"
+                >
+                  <Twitter size={15} />
+                </a>
+              </div>
             </div>
 
+            {/* Right: link columns */}
             <div className="grid grid-cols-2 gap-10 sm:grid-cols-3">
               <div>
-                <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-gray-400">Product</p>
-                <div className="flex flex-col gap-3 text-sm text-gray-500">
-                  <Link to="/register" className="hover:text-gray-900 transition-colors">Get started</Link>
-                  <Link to="/login" className="hover:text-gray-900 transition-colors">Sign in</Link>
-                  <Link to="/about" className="hover:text-gray-900 transition-colors">About</Link>
+                <p className="mb-5 text-[11px] font-bold uppercase tracking-[0.22em] text-white/30">Product</p>
+                <div className="flex flex-col gap-3.5">
+                  <Link to="/register" className="text-sm text-white/55 transition-colors hover:text-white">Get started</Link>
+                  <Link to="/login" className="text-sm text-white/55 transition-colors hover:text-white">Sign in</Link>
+                  <Link to="/about" className="text-sm text-white/55 transition-colors hover:text-white">About</Link>
                 </div>
               </div>
               <div>
-                <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-gray-400">Support</p>
-                <div className="flex flex-col gap-3 text-sm text-gray-500">
-                  <a href="mailto:hello@apex-social.com" className="hover:text-gray-900 transition-colors">Contact us</a>
-                  <Link to="/community-guidelines" className="hover:text-gray-900 transition-colors">Community guidelines</Link>
+                <p className="mb-5 text-[11px] font-bold uppercase tracking-[0.22em] text-white/30">Support</p>
+                <div className="flex flex-col gap-3.5">
+                  <a href="mailto:hello@apex-social.com" className="text-sm text-white/55 transition-colors hover:text-white">Contact us</a>
+                  <Link to="/community-guidelines" className="text-sm text-white/55 transition-colors hover:text-white">Community guidelines</Link>
                 </div>
               </div>
               <div>
-                <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-gray-400">Legal</p>
-                <div className="flex flex-col gap-3 text-sm text-gray-500">
-                  <Link to="/privacy" className="hover:text-gray-900 transition-colors">Privacy Policy</Link>
-                  <Link to="/terms" className="hover:text-gray-900 transition-colors">Terms of Service</Link>
-                  <Link to="/community-guidelines" className="hover:text-gray-900 transition-colors">Community Guidelines</Link>
+                <p className="mb-5 text-[11px] font-bold uppercase tracking-[0.22em] text-white/30">Legal</p>
+                <div className="flex flex-col gap-3.5">
+                  <Link to="/privacy" className="text-sm text-white/55 transition-colors hover:text-white">Privacy Policy</Link>
+                  <Link to="/terms" className="text-sm text-white/55 transition-colors hover:text-white">Terms of Service</Link>
+                  <Link to="/community-guidelines" className="text-sm text-white/55 transition-colors hover:text-white">Community Guidelines</Link>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-gray-100 pt-6 sm:flex-row">
-            <p className="text-xs text-gray-400">© 2026 Apex. All rights reserved.</p>
-            <div className="flex items-center gap-1.5 text-xs text-gray-400">
-              <Lock size={10} />
-              <span>apex-social.com · SSL secured</span>
+          {/* Bottom bar */}
+          <div className="mt-14 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-7 sm:flex-row">
+            <p className="text-xs text-white/25">© 2026 Apex. All rights reserved.</p>
+            <div className="flex items-center gap-5">
+              <Link to="/privacy" className="text-xs text-white/35 transition-colors hover:text-white/70">Privacy</Link>
+              <Link to="/terms" className="text-xs text-white/35 transition-colors hover:text-white/70">Terms</Link>
+              <Link to="/community-guidelines" className="text-xs text-white/35 transition-colors hover:text-white/70">Guidelines</Link>
             </div>
           </div>
         </div>
