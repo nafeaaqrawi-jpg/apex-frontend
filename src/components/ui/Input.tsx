@@ -30,11 +30,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             id={inputId}
             className={`
-              w-full rounded-2xl border bg-gray-50 px-4 py-3.5 text-sm text-gray-900 placeholder:text-gray-400
+              w-full rounded-2xl border bg-[#f4f0fb] px-4 py-3.5 text-sm text-gray-900 placeholder:text-gray-400
               transition-all duration-200
-              focus:outline-none focus:ring-0 focus:border-purple-400
+              focus:outline-none focus:ring-2 focus:ring-purple-400/40 focus:border-purple-400 focus:bg-white
               disabled:opacity-60 disabled:cursor-not-allowed
-              ${error ? 'border-red-300 focus:border-red-400' : 'border-gray-200 hover:border-gray-300'}
+              ${error ? 'border-red-300 bg-red-50 focus:border-red-400 focus:ring-red-200' : 'border-[#e2d9f3] hover:border-purple-300'}
               ${leftIcon ? 'pl-10' : ''}
               ${rightIcon ? 'pr-10' : ''}
               ${className}

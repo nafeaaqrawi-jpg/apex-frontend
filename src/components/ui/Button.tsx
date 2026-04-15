@@ -28,7 +28,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     const variants = {
       primary:
-        'bg-gradient-to-r from-purple-600 to-violet-600 text-white shadow-button hover:from-purple-700 hover:to-violet-700 active:scale-[0.98]',
+        'bg-gradient-to-r from-purple-600 to-violet-600 text-white shadow-lg shadow-purple-200 hover:from-purple-700 hover:to-violet-700 hover:shadow-purple-300 active:scale-[0.98]',
       secondary:
         'bg-purple-50 text-purple-700 hover:bg-purple-100 active:scale-[0.98]',
       ghost:
@@ -42,7 +42,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const sizes = {
       sm: 'text-sm px-4 py-2 gap-1.5',
       md: 'text-sm px-5 py-2.5 gap-2',
-      lg: 'text-base px-6 py-3.5 gap-2',
+      lg: 'text-base px-6 py-4 gap-2 rounded-2xl',
     }
 
     return (

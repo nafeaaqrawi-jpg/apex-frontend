@@ -22,11 +22,14 @@ apiClient.interceptors.response.use(
     return response
   },
   (error) => {
-    const message =
-      error.response?.data?.error ||
-      error.response?.data?.message ||
-      error.message ||
-      'Something went wrong. Please try again.'
+    // Network Error = VITE_API_URL not set or backend unreachable
+    const isNetworkError = !error.response && (error.message === 'Network Error' || error.code === 'ERR_NETWORK')
+    const message = isNetworkError
+      ? 'Cannot reach Apex servers. Please try again in a moment.'
+      : error.response?.data?.error ||
+        error.response?.data?.message ||
+        error.message ||
+        'Something went wrong. Please try again.'
     return Promise.reject(new Error(message))
   }
 )
