@@ -33,6 +33,21 @@ import CommunityGuidelinesPage from './pages/legal/CommunityGuidelinesPage'
 import LandingPage from './pages/landing/LandingPage'
 import AboutPage from './pages/landing/AboutPage'
 import CareersPage from './pages/landing/CareersPage'
+import MembersPage from './pages/landing/MembersPage'
+import PremiumFeaturesPage from './pages/landing/PremiumFeaturesPage'
+
+// Resource / legal pages
+import FAQPage from './pages/legal/FAQPage'
+import SafeDatingPage from './pages/legal/SafeDatingPage'
+import TrustSafetyPage from './pages/legal/TrustSafetyPage'
+import PressPage from './pages/legal/PressPage'
+import SecurityPage from './pages/legal/SecurityPage'
+import CookiePolicyPage from './pages/legal/CookiePolicyPage'
+import AccessibilityPage from './pages/legal/AccessibilityPage'
+import HowWeConnectPage from './pages/legal/HowWeConnectPage'
+import ConsumerHealthDataPage from './pages/legal/ConsumerHealthDataPage'
+import PrivacyChoicesPage from './pages/legal/PrivacyChoicesPage'
+import ColoradoSafetyPage from './pages/legal/ColoradoSafetyPage'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth()
@@ -171,11 +186,24 @@ export default function App() {
       {/* Public marketing routes */}
       <Route path="/about" element={<AboutPage />} />
       <Route path="/careers" element={<CareersPage />} />
+      <Route path="/members" element={<MembersPage />} />
+      <Route path="/premium-features" element={<PremiumFeaturesPage />} />
+      <Route path="/how-we-connect" element={<HowWeConnectPage />} />
+      <Route path="/press" element={<PressPage />} />
 
       {/* Legal — public routes */}
       <Route path="/terms" element={<TermsPage />} />
       <Route path="/privacy" element={<PrivacyPage />} />
       <Route path="/community-guidelines" element={<CommunityGuidelinesPage />} />
+      <Route path="/faq" element={<FAQPage />} />
+      <Route path="/safe-dating" element={<SafeDatingPage />} />
+      <Route path="/trust-safety" element={<TrustSafetyPage />} />
+      <Route path="/security" element={<SecurityPage />} />
+      <Route path="/cookie-policy" element={<CookiePolicyPage />} />
+      <Route path="/accessibility" element={<AccessibilityPage />} />
+      <Route path="/consumer-health-data" element={<ConsumerHealthDataPage />} />
+      <Route path="/privacy-choices" element={<PrivacyChoicesPage />} />
+      <Route path="/colorado-safety" element={<ColoradoSafetyPage />} />
 
       {/* 404 */}
       <Route path="*" element={<Navigate to="/" replace />} />
