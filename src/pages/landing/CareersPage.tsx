@@ -4,10 +4,10 @@ import { ArrowRight, ArrowLeft, MapPin, Zap, ShieldCheck, Heart, Star } from 'lu
 import ApexLogo from '../../components/ui/ApexLogo'
 
 const PERKS = [
-  { icon: <Zap size={18} />, title: 'Equity from day one', body: 'Meaningful founder-level equity. You're building this with us.' },
+  { icon: <Zap size={18} />, title: 'Equity from day one', body: "Meaningful founder-level equity. You're building this with us." },
   { icon: <MapPin size={18} />, title: 'Fully remote', body: 'Work from anywhere. We care about output, not office attendance.' },
   { icon: <Heart size={18} />, title: 'Health coverage', body: 'Full medical, dental, and vision. We take care of our people.' },
-  { icon: <ShieldCheck size={18} />, title: 'Top-tier comp', body: '$140K–$200K base depending on experience. Competitive by any standard.' },
+  { icon: <ShieldCheck size={18} />, title: 'Top-tier comp', body: '$140K\u2013$200K base depending on experience. Competitive by any standard.' },
 ]
 
 const REQUIREMENTS = [
@@ -28,9 +28,9 @@ const NICE_TO_HAVE = [
 ]
 
 const ABOUT_ROLE = [
-  'You will be the second engineer on a team building a category-defining premium dating platform. This isn't another swipe app — Apex is built around trust, credentials, and real compatibility.',
-  'You'll own large parts of the product end-to-end: backend architecture, API design, database performance, real-time messaging, matching logic, and infrastructure. You'll work directly with the founder, move fast, and leave your fingerprints on everything.',
-  'We're pre-Series A, growing fast, and building toward a Match Group acquisition at $10–50M. The engineering bar is high and the opportunity is real.',
+  "You will be the second engineer on a team building a category-defining premium dating platform. This isn't another swipe app — Apex is built around trust, credentials, and real compatibility.",
+  "You'll own large parts of the product end-to-end: backend architecture, API design, database performance, real-time messaging, matching logic, and infrastructure. You'll work directly with the founder, move fast, and leave your fingerprints on everything.",
+  "We're pre-Series A, growing fast, and building toward a Match Group acquisition at $10\u201350M. The engineering bar is high and the opportunity is real.",
 ]
 
 export default function CareersPage() {
