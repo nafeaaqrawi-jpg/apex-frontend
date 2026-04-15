@@ -239,3 +239,68 @@ export const VALUES = [
 ] as const
 
 export type Value = (typeof VALUES)[number]
+
+export interface AgentSourceLink {
+  label: string
+  url: string
+}
+
+export interface AgentRosterMember {
+  key: string
+  displayName: string
+  roleLabel: string
+  accent: string
+  summary: string
+  focusAreas: string[]
+  sourceLinks: AgentSourceLink[]
+  seedTakeaways: string[]
+}
+
+export interface AgentChannelRecord {
+  id: string
+  key: string
+  title: string
+  description?: string | null
+  metadata?: Record<string, unknown> | null
+  createdAt: string
+  updatedAt: string
+}
+
+export interface AgentMessage {
+  id: string
+  channelId: string
+  speakerType: 'founder' | 'agent' | 'system'
+  agentKey?: string | null
+  displayName: string
+  roleLabel?: string | null
+  content: string
+  metadata?: Record<string, unknown> | null
+  createdAt: string
+}
+
+export interface AgentArtifact {
+  id: string
+  channelId: string
+  artifactType: 'implementation_plan' | 'research_digest' | string
+  title: string
+  summary: string
+  content: Record<string, unknown>
+  createdAt: string
+  updatedAt: string
+}
+
+export interface AgentChannelSnapshot {
+  channel: AgentChannelRecord
+  roster: AgentRosterMember[]
+  messages: AgentMessage[]
+  artifacts: AgentArtifact[]
+}
+
+export interface TelemetrySummary {
+  windowDays: number
+  totalEvents: number
+  pageViews: number
+  topRoutes: Array<{ route: string; count: number }>
+  topEventTypes: Array<{ eventType: string; count: number }>
+  lastActiveAt: string | null
+}

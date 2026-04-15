@@ -1,3 +1,5 @@
+import { useId } from 'react'
+
 interface ApexLogoProps {
   size?: number
   className?: string
@@ -11,15 +13,15 @@ export default function ApexLogo({
   showText = true,
   variant = 'default',
 }: ApexLogoProps) {
+  const uid = useId().replace(/:/g, '')
   const symbolSize = size
-  // Use a unique ID per variant to avoid SVG gradient conflicts in the same DOM
-  const gradientId = `apex-grad-${variant}`
+  const gradientId = `apex-grad-${variant}-${uid}`
   const textSize = Math.round(size * 0.44)
   const isWhite = variant === 'white'
 
   const symbolColor = isWhite ? '#ffffff' : `url(#${gradientId})`
-  const accentLeft = isWhite ? 'rgba(255,255,255,0.7)' : '#8B5CF6'
-  const accentRight = isWhite ? 'rgba(255,255,255,0.7)' : '#7C3AED'
+  const accentLeft = isWhite ? 'rgba(255,255,255,0.76)' : '#B45309'
+  const accentRight = isWhite ? 'rgba(255,255,255,0.72)' : '#5B21B6'
   const strokeColor = isWhite ? 'rgba(255,255,255,0.8)' : `url(#${gradientId})`
 
   return (
@@ -38,19 +40,15 @@ export default function ApexLogo({
         {!isWhite && (
           <defs>
             <linearGradient id={gradientId} x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#7C3AED" />
-              <stop offset="100%" stopColor="#8B5CF6" />
+              <stop offset="0%" stopColor="#171420" />
+              <stop offset="58%" stopColor="#5B21B6" />
+              <stop offset="100%" stopColor="#B45309" />
             </linearGradient>
           </defs>
         )}
 
-        {/* Mountain peak — sharp triangular "A" form */}
-        <path
-          d="M32 6 L54 50 H42 L32 28 L22 50 H10 Z"
-          fill={symbolColor}
-        />
+        <path d="M32 6 L54 50 H42 L32 28 L22 50 H10 Z" fill={symbolColor} />
 
-        {/* Crossbar cutout to give the A negative space */}
         <rect
           x="17"
           y="38"
@@ -60,7 +58,6 @@ export default function ApexLogo({
           rx="1"
         />
 
-        {/* Elliptical orbit arc beneath the peak */}
         <ellipse
           cx="32"
           cy="57"
@@ -73,7 +70,6 @@ export default function ApexLogo({
           strokeLinecap="round"
         />
 
-        {/* Two small accent dots at the base tips */}
         <circle cx="10" cy="50" r="2.5" fill={accentLeft} />
         <circle cx="54" cy="50" r="2.5" fill={accentRight} />
       </svg>
@@ -85,16 +81,16 @@ export default function ApexLogo({
               ? {
                   fontSize: textSize,
                   lineHeight: 1,
-                  letterSpacing: '0.22em',
+                  letterSpacing: '0.2em',
                   fontWeight: 900,
                   color: '#ffffff',
                 }
               : {
                   fontSize: textSize,
                   lineHeight: 1,
-                  letterSpacing: '0.22em',
+                  letterSpacing: '0.2em',
                   fontWeight: 900,
-                  background: 'linear-gradient(135deg, #7C3AED, #8B5CF6)',
+                  background: 'linear-gradient(135deg, #171420 0%, #5B21B6 58%, #B45309 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',

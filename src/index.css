@@ -1,21 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --apex-ink: #161616;
+    --apex-ivory: #f4ede2;
+    --apex-plum: #5b21b6;
+    --apex-emerald: #0f766e;
+    --apex-amber: #b45309;
+  }
+
   * {
     -webkit-tap-highlight-color: transparent;
   }
 
   html {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Manrope', system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background: var(--apex-ivory);
   }
 
   body {
-    @apply bg-gray-50 text-gray-900;
+    color: var(--apex-ink);
+    background:
+      radial-gradient(circle at top, rgba(91, 33, 182, 0.12), transparent 28rem),
+      radial-gradient(circle at 85% 18%, rgba(15, 118, 110, 0.12), transparent 20rem),
+      linear-gradient(180deg, #fbf8f2 0%, #f4ede2 55%, #efe6d8 100%);
     overscroll-behavior: none;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.18;
+    background-image:
+      linear-gradient(rgba(22, 22, 22, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(22, 22, 22, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.35), transparent 78%);
+  }
+
+  ::selection {
+    background: rgba(91, 33, 182, 0.18);
+    color: var(--apex-ink);
   }
 
   input[type='number']::-webkit-inner-spin-button,
@@ -31,11 +64,22 @@
 
 @layer components {
   .apex-gradient {
-    @apply bg-gradient-to-br from-purple-600 to-violet-600;
+    background: linear-gradient(135deg, #171420 0%, #5b21b6 54%, #b45309 100%);
+  }
+
+  .apex-panel {
+    @apply rounded-[28px] border border-white/70 bg-white/80 shadow-[0_20px_70px_rgba(17,24,39,0.08)] backdrop-blur-xl;
+  }
+
+  .apex-soft-panel {
+    @apply rounded-[24px] border border-white/70 bg-[#fbf7ef]/90 shadow-[0_16px_50px_rgba(17,24,39,0.05)] backdrop-blur-xl;
   }
 
   .apex-gradient-text {
-    @apply bg-gradient-to-r from-purple-600 to-violet-500 bg-clip-text text-transparent;
+    background: linear-gradient(135deg, #171420 0%, #5b21b6 58%, #b45309 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
   .card {
@@ -45,9 +89,20 @@
   .card-hover {
     @apply hover:shadow-card-hover transition-shadow duration-200;
   }
+
+  .apex-chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-white/70 bg-white/72 px-3 py-1.5 text-[11px] font-semibold text-[#2b2336] shadow-sm backdrop-blur;
+  }
 }
 
 @layer utilities {
+  .apex-grid {
+    background-image:
+      linear-gradient(rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+    background-size: 42px 42px;
+  }
+
   .safe-bottom {
     padding-bottom: env(safe-area-inset-bottom);
   }

@@ -115,21 +115,21 @@ function CountdownToMidnight() {
   }, [compute])
 
   return (
-    <div className="flex flex-col items-center gap-2 px-6 py-16 text-center">
+    <div className="mx-4 mt-4 flex flex-col items-center gap-2 rounded-[30px] border border-white/70 bg-white/82 px-6 py-16 text-center shadow-[0_20px_60px_rgba(17,24,39,0.08)] backdrop-blur-xl">
       <motion.div
-        className="flex h-20 w-20 items-center justify-center rounded-[22px] bg-purple-50"
+        className="flex h-20 w-20 items-center justify-center rounded-[22px] bg-[#f5efe5]"
         animate={{ y: [-4, 4, -4] }}
         transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
       >
-        <Clock size={32} className="text-purple-400" />
+        <Clock size={32} className="text-[#5b21b6]" />
       </motion.div>
       <h2 className="text-xl font-bold text-gray-900 mt-3">You've seen everyone for today</h2>
       <p className="text-sm text-gray-500 leading-relaxed max-w-xs">
         New picks drop at midnight. Come back tomorrow — the right one might be in tomorrow's drop.
       </p>
-      <div className="mt-4 inline-flex items-center gap-2 rounded-2xl bg-purple-50 px-5 py-2.5">
-        <Clock size={14} className="text-purple-500" />
-        <span className="font-mono text-sm font-semibold text-purple-700">{timeLeft}</span>
+      <div className="mt-4 inline-flex items-center gap-2 rounded-2xl bg-[#171420] px-5 py-2.5">
+        <Clock size={14} className="text-[#d6c8ff]" />
+        <span className="font-mono text-sm font-semibold text-white">{timeLeft}</span>
       </div>
     </div>
   )
@@ -144,22 +144,23 @@ function WhoLikedYouRow({ viewers }: { viewers: ProfileViewer[] }) {
   if (viewers.length === 0) return null
 
   return (
-    <div className="bg-white border-b border-gray-100">
-      <div className="px-4 pt-4 pb-2 flex items-center justify-between">
+    <div className="px-4 pt-4">
+      <div className="overflow-hidden rounded-[30px] border border-white/15 bg-[#171420] px-4 py-4 text-white shadow-[0_20px_60px_rgba(17,24,39,0.18)]">
+      <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <motion.div
             animate={{ scale: [1, 1.22, 1] }}
             transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
           >
-            <Heart size={15} className="text-purple-600" fill="#7c3aed" />
+            <Heart size={15} className="text-[#d6c8ff]" fill="#b8a8ff" />
           </motion.div>
-          <span className="text-sm font-bold text-gray-900">
+          <span className="text-sm font-bold text-white">
             {viewers.length === 1 ? '1 person' : `${viewers.length} people`} liked you
           </span>
         </div>
-        <span className="text-xs text-purple-600 font-medium">Tap to connect</span>
+        <span className="text-xs font-medium text-[#d7c7b8]">Tap to connect</span>
       </div>
-      <div className="flex gap-3 overflow-x-auto px-4 pb-4 scrollbar-hide">
+      <div className="mt-4 flex gap-3 overflow-x-auto scrollbar-hide">
         {viewers.map((v) => (
           <button
             key={v.id}
@@ -171,10 +172,10 @@ function WhoLikedYouRow({ viewers }: { viewers: ProfileViewer[] }) {
                 <img
                   src={v.viewer.profilePhotoUrl}
                   alt="Profile"
-                  className="h-16 w-16 rounded-2xl object-cover border-2 border-purple-200"
+                  className="h-16 w-16 rounded-2xl object-cover border-2 border-white/20"
                 />
               ) : (
-                <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-purple-300 to-violet-500 flex items-center justify-center border-2 border-purple-200">
+                <div className="h-16 w-16 rounded-2xl bg-[linear-gradient(135deg,#5b21b6_0%,#8b5cf6_58%,#b45309_100%)] flex items-center justify-center border-2 border-white/20">
                   <Heart size={22} className="text-white" fill="white" />
                 </div>
               )}
@@ -184,11 +185,12 @@ function WhoLikedYouRow({ viewers }: { viewers: ProfileViewer[] }) {
                 </div>
               )}
             </div>
-            <span className="text-xs text-gray-600 font-medium max-w-[64px] truncate text-center">
+            <span className="max-w-[64px] truncate text-center text-xs font-medium text-white/72">
               {v.viewer.college?.name?.split(' ')[0] ?? 'Member'}
             </span>
           </button>
         ))}
+      </div>
       </div>
     </div>
   )
@@ -217,6 +219,37 @@ function getSubheading(profile: DiscoverProfile): string | null {
   if (profile.headline) return profile.headline
   if (profile.currentRole && profile.company) return `${profile.currentRole} at ${profile.company}`
   return profile.currentRole ?? profile.major ?? null
+}
+
+function getMostCommonValue(values: Array<string | undefined | null>) {
+  const counts = new Map<string, number>()
+
+  values
+    .map((value) => value?.trim())
+    .filter((value): value is string => Boolean(value))
+    .forEach((value) => {
+      counts.set(value, (counts.get(value) ?? 0) + 1)
+    })
+
+  return [...counts.entries()].sort((a, b) => b[1] - a[1])[0] ?? null
+}
+
+function BriefingTile({
+  eyebrow,
+  title,
+  detail,
+}: {
+  eyebrow: string
+  title: string
+  detail: string
+}) {
+  return (
+    <div className="min-w-[168px] rounded-[24px] border border-white/12 bg-white/8 px-4 py-4 text-left backdrop-blur-sm">
+      <p className="text-[10px] font-semibold uppercase tracking-[0.26em] text-white/45">{eyebrow}</p>
+      <p className="mt-2 text-sm font-semibold text-white">{title}</p>
+      <p className="mt-1 text-xs leading-relaxed text-white/60">{detail}</p>
+    </div>
+  )
 }
 
 // ---------------------------------------------------------------------------
@@ -646,6 +679,52 @@ export default function DiscoverPage() {
   // Feed = today's drop minus already removed
   const feedProfiles = todayDropProfiles.filter((p) => !removedIds.has(p.id))
 
+  const verifiedCount = todayDropProfiles.filter((profile) => profile.idVerified).length
+  const academicStandouts = todayDropProfiles.filter(
+    (profile) => (profile.gpa ?? 0) >= 3.8 || (profile.sat ?? 0) >= 1500 || (profile.act ?? 0) >= 34
+  ).length
+  const relocatingCount = todayDropProfiles.filter(
+    (profile) => profile.futureLocation && profile.futureLocation !== profile.locationLabel
+  ).length
+  const campusCount = new Set(todayDropProfiles.map((profile) => profile.college?.name).filter(Boolean)).size
+  const topFutureMove = getMostCommonValue(todayDropProfiles.map((profile) => profile.futureLocation))
+  const topWorkHub = getMostCommonValue(todayDropProfiles.map((profile) => profile.workLocation))
+  const topCurrentCity = getMostCommonValue(todayDropProfiles.map((profile) => profile.locationLabel))
+
+  const briefingLine = topFutureMove
+    ? `${topFutureMove[1]} people in today's drop are already planning for ${topFutureMove[0]}.`
+    : topWorkHub
+      ? `${topWorkHub[1]} people in today's drop work in ${topWorkHub[0]}.`
+      : topCurrentCity
+        ? `Today's drop is clustering around ${topCurrentCity[0]}.`
+        : 'Today leans toward high-intent profiles with stronger trust and credibility signals.'
+
+  const briefingCards = [
+    {
+      eyebrow: 'Trust',
+      title: verifiedCount > 0 ? `${verifiedCount} verified people today` : 'Trust cues need more depth',
+      detail:
+        verifiedCount > 0
+          ? 'Visible verification keeps uncertainty low and connection intent high.'
+          : 'Complete your verification stack to stand out when the next drop refreshes.',
+    },
+    {
+      eyebrow: 'Movement',
+      title: topFutureMove ? `Moving toward ${topFutureMove[0]}` : 'Career geography matters',
+      detail: topFutureMove
+        ? 'Relocation-aware discovery is active. These people are planning ahead, not drifting.'
+        : 'Current area, work city, and future move are shaping who you see.',
+    },
+    {
+      eyebrow: 'Campus pulse',
+      title: campusCount > 0 ? `${campusCount} campuses in the room` : 'Curated campus mix',
+      detail:
+        academicStandouts > 0
+          ? `${academicStandouts} profiles today are carrying top academic signals.`
+          : 'Apex is leaning into sharper, more intentional profiles instead of volume.',
+    },
+  ]
+
   // Daily drop exhausted when feed is empty AND we had profiles today
   const dailyDropDone = !isLoading && !error && feedProfiles.length === 0 && todayDropProfiles.length > 0
 
@@ -706,9 +785,65 @@ export default function DiscoverPage() {
 
   return (
     <AppLayout>
-      <div className="min-h-screen bg-gray-100 pb-24">
+      <div className="min-h-screen pb-28">
         {/* ── Sticky minimal header ── */}
-        <div className="sticky top-0 z-20 bg-white/95 backdrop-blur-sm border-b border-gray-100">
+        <div className="px-4 pt-2">
+          <div className="overflow-hidden rounded-[34px] bg-[#121112] text-white shadow-[0_26px_90px_rgba(17,24,39,0.22)]">
+            <div className="bg-[radial-gradient(circle_at_top,_rgba(91,33,182,0.36),_transparent_52%),radial-gradient(circle_at_85%_18%,_rgba(15,118,110,0.28),_transparent_30%),linear-gradient(135deg,#101010_0%,#1f1730_52%,#111827_100%)] px-5 pb-5 pt-5">
+              <div className="flex items-center justify-between gap-3">
+                <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/70">
+                  <Sparkles size={11} />
+                  Tonight's briefing
+                </span>
+                <span className="rounded-full border border-white/12 bg-white/6 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/60">
+                  {feedProfiles.length}/{DAILY_DROP_LIMIT} left
+                </span>
+              </div>
+
+              <div className="mt-5">
+                <h1 className="font-display text-[34px] font-semibold leading-[0.95] text-white">
+                  Curated people
+                  <br />
+                  going places.
+                </h1>
+                <p className="mt-3 max-w-sm text-sm leading-relaxed text-white/68">{briefingLine}</p>
+              </div>
+
+              <div className="mt-5 grid grid-cols-3 gap-2">
+                <div className="rounded-[22px] border border-white/10 bg-white/8 px-3 py-3">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/45">Streak</p>
+                  <p className="mt-2 text-xl font-bold text-white">{streak > 0 ? streak : '0'}</p>
+                  <p className="mt-1 text-[11px] text-white/55">days active</p>
+                </div>
+                <div className="rounded-[22px] border border-white/10 bg-white/8 px-3 py-3">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/45">Viewers</p>
+                  <p className="mt-2 text-xl font-bold text-white">{viewers.length}</p>
+                  <p className="mt-1 text-[11px] text-white/55">checked you out</p>
+                </div>
+                <div className="rounded-[22px] border border-white/10 bg-white/8 px-3 py-3">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/45">Progress</p>
+                  <p className="mt-2 text-xl font-bold text-white">{xpProgress}%</p>
+                  <p className="mt-1 text-[11px] text-white/55">to next level</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="border-t border-white/10 bg-black/14 px-5 py-4">
+              <div className="flex gap-3 overflow-x-auto scrollbar-hide">
+                {briefingCards.map((card) => (
+                  <BriefingTile
+                    key={card.eyebrow}
+                    eyebrow={card.eyebrow}
+                    title={card.title}
+                    detail={card.detail}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="sticky top-[78px] z-20 rounded-[28px] border border-white/70 bg-white/82 shadow-[0_14px_50px_rgba(17,24,39,0.08)] backdrop-blur-xl mx-4 mt-3 overflow-hidden">
           <div className="flex items-center justify-between px-5 pb-3 pt-4">
             <div>
               <span className="text-base font-bold text-gray-900">Discover</span>
@@ -719,6 +854,11 @@ export default function DiscoverPage() {
               )}
             </div>
             <div className="flex items-center gap-2">
+              {relocatingCount > 0 && (
+                <span className="rounded-full bg-[#f5efe5] px-2.5 py-1 text-[11px] font-semibold text-[#7c4a14]">
+                  {relocatingCount} moving
+                </span>
+              )}
               {streak > 0 && (
                 <motion.div
                   key={streak}
@@ -731,15 +871,12 @@ export default function DiscoverPage() {
                   <span className="text-xs font-bold text-orange-600">{streak}</span>
                 </motion.div>
               )}
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-purple-50">
-                <Sparkles size={15} className="text-purple-600" />
-              </div>
             </div>
           </div>
           {/* XP progress bar */}
-          <div className="h-0.5 bg-gray-100">
+          <div className="h-0.5 bg-black/5">
             <motion.div
-              className="h-full bg-gradient-to-r from-purple-500 to-violet-500"
+              className="h-full bg-[linear-gradient(90deg,#5b21b6_0%,#0f766e_100%)]"
               animate={{ width: `${xpProgress}%` }}
               transition={{ duration: 0.6, ease: 'easeOut' }}
             />

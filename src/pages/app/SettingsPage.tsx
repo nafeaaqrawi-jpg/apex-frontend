@@ -10,6 +10,7 @@ import {
   Bell,
   Eye,
   BadgeCheck,
+  Cpu,
   Trash2,
   LogOut,
   Shield,
@@ -118,6 +119,26 @@ export default function SettingsPage() {
         </div>
 
         <div className="flex flex-col gap-6">
+          <div>
+            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1 px-1">
+              Intelligence
+            </p>
+            <div className="rounded-[20px] border border-gray-100 bg-white shadow-sm">
+              <button
+                onClick={() => navigate('/agents')}
+                className="w-full flex items-center justify-between py-3.5 px-4 hover:bg-gray-50 transition-colors text-left"
+              >
+                <div className="flex items-center gap-3">
+                  <Cpu size={16} className="text-violet-500 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">Apex Council</p>
+                    <p className="text-xs text-gray-400 mt-0.5">Research, planning, and implementation agents</p>
+                  </div>
+                </div>
+                <ChevronRight size={16} className="text-gray-300" />
+              </button>
+            </div>
+          </div>
 
           {/* ── Account section ─────────────────────────────────────────── */}
           <div>

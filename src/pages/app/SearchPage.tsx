@@ -472,108 +472,133 @@ export default function SearchPage() {
 
   return (
     <AppLayout>
-      <div className="min-h-screen bg-gray-50 pb-28">
-        <div className="bg-white border-b border-gray-100 px-5 pt-4 pb-5">
-          <h1 className="text-xl font-bold text-gray-900">People</h1>
-          <p className="mt-0.5 text-sm text-gray-500">
-            Search by name, school, company, city, or just describe who you&apos;re looking for.
-          </p>
-
-          <div className="mt-4 inline-flex rounded-2xl bg-gray-100 p-1">
-            {[
-              { value: 'search' as const, label: 'Search' },
-              { value: 'nearby' as const, label: 'Nearby Map' },
-            ].map((tab) => (
-              <button
-                key={tab.value}
-                type="button"
-                onClick={() => setMode(tab.value)}
-                className={`rounded-2xl px-4 py-2.5 text-sm font-semibold transition-all ${
-                  mode === tab.value ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          {mode === 'search' ? (
-            <div className="relative mt-4">
-              {/* Glow ring behind input */}
-              <motion.div
-                className="absolute -inset-1 rounded-2xl bg-purple-400/20 pointer-events-none"
-                animate={searchFocused ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.97 }}
-                transition={{ duration: 0.2 }}
-              />
-              <div className="relative">
-                <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-                  <Sparkles size={20} className={`transition-colors duration-200 ${searchFocused ? 'text-purple-600' : 'text-purple-500'}`} />
-                </div>
-                <input
-                  type="text"
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  onFocus={() => setSearchFocused(true)}
-                  onBlur={() => setSearchFocused(false)}
-                  placeholder="Woman in Michigan with a job lined up in Chicago..."
-                  className="w-full rounded-2xl bg-gray-100 py-4 pl-12 pr-5 text-base text-gray-900 placeholder-gray-400 transition-all duration-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-400"
-                  autoComplete="off"
-                  autoCorrect="off"
-                  spellCheck={false}
-                  autoFocus
-                />
+      <div className="min-h-screen bg-transparent pb-28">
+        <div className="px-4 pt-2">
+          <div className="overflow-hidden rounded-[34px] bg-[#121112] text-white shadow-[0_26px_90px_rgba(17,24,39,0.22)]">
+            <div className="bg-[radial-gradient(circle_at_top,_rgba(91,33,182,0.34),_transparent_48%),radial-gradient(circle_at_85%_18%,_rgba(15,118,110,0.24),_transparent_32%),linear-gradient(135deg,#101010_0%,#1f1730_56%,#111827_100%)] px-5 pb-5 pt-5">
+              <div className="flex items-center justify-between gap-3">
+                <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/72">
+                  <Sparkles size={11} />
+                  Intentional search
+                </span>
+                <span className="rounded-full border border-white/12 bg-white/6 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/60">
+                  {mode === 'search' ? 'Signal mode' : 'Nearby mode'}
+                </span>
               </div>
-              <AnimatePresence>
-                {inputValue.length > 0 && inputValue.trim().length <= 2 && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="absolute inset-y-0 right-4 flex items-center"
-                  >
-                    <span className="text-xs text-gray-400">Keep typing...</span>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+
+              <div className="mt-5">
+                <h1 className="font-display text-[34px] font-semibold leading-[0.95] text-white">
+                  Find the right
+                  <br />
+                  person faster.
+                </h1>
+                <p className="mt-3 max-w-sm text-sm leading-relaxed text-white/68">
+                  Search by ambition, city, future move, or switch to the map when proximity matters.
+                </p>
+              </div>
             </div>
-          ) : (
-            <div className="mt-4 rounded-2xl bg-[#f8f5ef] p-4">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="text-sm font-semibold text-gray-900">Proximity mode</p>
-                  <p className="mt-1 text-xs leading-relaxed text-gray-500">
-                    Save your live coordinates, then see nearby profiles on the map and by distance.
-                  </p>
-                </div>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  loading={locationMutation.isPending}
-                  onClick={() => locationMutation.mutate()}
-                >
-                  <LocateFixed size={14} />
-                  {hasLocation ? 'Refresh location' : 'Use my location'}
-                </Button>
-              </div>
 
-              <div className="mt-4 flex flex-wrap gap-2">
-                {[25, 50, 75, 150].map((radius) => (
+            <div className="border-t border-white/10 bg-black/14 px-4 py-4">
+              <div className="inline-flex rounded-2xl bg-white/8 p-1">
+                {[
+                  { value: 'search' as const, label: 'Search' },
+                  { value: 'nearby' as const, label: 'Nearby Map' },
+                ].map((tab) => (
                   <button
-                    key={radius}
+                    key={tab.value}
                     type="button"
-                    onClick={() => setRadiusMiles(radius)}
-                    className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-all ${
-                      radiusMiles === radius ? 'bg-[#111827] text-white' : 'bg-white text-gray-600'
+                    onClick={() => setMode(tab.value)}
+                    className={`rounded-2xl px-4 py-2.5 text-sm font-semibold transition-all ${
+                      mode === tab.value ? 'bg-white text-gray-900 shadow-sm' : 'text-white/58'
                     }`}
                   >
-                    {radius} mi
+                    {tab.label}
                   </button>
                 ))}
               </div>
 
-              {locationError && <p className="mt-3 text-xs font-medium text-red-500">{locationError}</p>}
+              {mode === 'search' ? (
+                <div className="relative mt-4">
+                  <motion.div
+                    className="pointer-events-none absolute -inset-1 rounded-2xl bg-[#b8a8ff]/20"
+                    animate={searchFocused ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.97 }}
+                    transition={{ duration: 0.2 }}
+                  />
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+                      <Sparkles
+                        size={20}
+                        className={`transition-colors duration-200 ${
+                          searchFocused ? 'text-[#d6c8ff]' : 'text-white/46'
+                        }`}
+                      />
+                    </div>
+                    <input
+                      type="text"
+                      value={inputValue}
+                      onChange={(e) => setInputValue(e.target.value)}
+                      onFocus={() => setSearchFocused(true)}
+                      onBlur={() => setSearchFocused(false)}
+                      placeholder="Woman in Michigan with a job lined up in Chicago..."
+                      className="w-full rounded-2xl border border-white/12 bg-white/8 py-4 pl-12 pr-5 text-base text-white placeholder:text-white/34 transition-all duration-200 focus:bg-white focus:text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#b8a8ff]"
+                      autoComplete="off"
+                      autoCorrect="off"
+                      spellCheck={false}
+                      autoFocus
+                    />
+                  </div>
+                  <AnimatePresence>
+                    {inputValue.length > 0 && inputValue.trim().length <= 2 && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="absolute inset-y-0 right-4 flex items-center"
+                      >
+                        <span className="text-xs text-white/46">Keep typing...</span>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ) : (
+                <div className="mt-4 rounded-2xl border border-white/12 bg-white/8 p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-sm font-semibold text-white">Proximity mode</p>
+                      <p className="mt-1 text-xs leading-relaxed text-white/60">
+                        Save your live coordinates, then see nearby profiles on the map and by distance.
+                      </p>
+                    </div>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      loading={locationMutation.isPending}
+                      onClick={() => locationMutation.mutate()}
+                    >
+                      <LocateFixed size={14} />
+                      {hasLocation ? 'Refresh location' : 'Use my location'}
+                    </Button>
+                  </div>
+
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {[25, 50, 75, 150].map((radius) => (
+                      <button
+                        key={radius}
+                        type="button"
+                        onClick={() => setRadiusMiles(radius)}
+                        className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-all ${
+                          radiusMiles === radius ? 'bg-white text-gray-900' : 'bg-white/10 text-white/70'
+                        }`}
+                      >
+                        {radius} mi
+                      </button>
+                    ))}
+                  </div>
+
+                  {locationError && <p className="mt-3 text-xs font-medium text-rose-300">{locationError}</p>}
+                </div>
+              )}
             </div>
-          )}
         </div>
 
         <div className="mx-auto max-w-md px-4 pt-5">
@@ -796,6 +821,7 @@ export default function SearchPage() {
             </div>
           )}
         </div>
+      </div>
       </div>
     </AppLayout>
   )
