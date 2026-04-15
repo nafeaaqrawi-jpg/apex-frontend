@@ -21,9 +21,9 @@ import {
 } from 'lucide-react'
 import ApexLogo from '../../components/ui/ApexLogo'
 
-// ── Ticker items ──────────────────────────────────────────────────────────────
+// ── Ticker items ───────────────────────────────────────────────────────────────
 const TICKER_ITEMS = [
-  '🎓 Harvard \'25 just joined — Pre-med',
+  "🎓 Harvard '25 just joined — Pre-med",
   '🔗 Two Stanford engineers connected',
   '🏙️ 14 new profiles from NYC this week',
   '✅ 2,400+ identity-verified members',
@@ -33,11 +33,11 @@ const TICKER_ITEMS = [
   '🔥 18 new connections made today',
   '🎯 Columbia pre-med joined — Moving to Boston',
   '✈️ NYC → SF relocation match made',
-  '📚 MIT \'25 thesis complete — Now dating',
+  "📚 MIT '25 thesis complete — Now dating",
   '⭐ Wharton MBA seeking serious relationship',
 ]
 
-// ── Mock profiles ─────────────────────────────────────────────────────────────
+// ── Mock profiles ──────────────────────────────────────────────────────────────
 const PREVIEW_PROFILES = [
   {
     name: 'Sofia C.',
@@ -77,7 +77,7 @@ const PREVIEW_PROFILES = [
   },
 ]
 
-// ── Comparison data ───────────────────────────────────────────────────────────
+// ── Comparison data ────────────────────────────────────────────────────────────
 const COMPARISON_ROWS = [
   { label: 'Discovery', others: 'Infinite swipe', apex: 'Daily curated drop' },
   { label: 'Profiles', others: 'Photos + bio', apex: 'Education, career, values, GPA' },
@@ -86,36 +86,46 @@ const COMPARISON_ROWS = [
   { label: 'Intent', others: 'Anyone', apex: 'Relationship-focused' },
 ]
 
-// ── Testimonials ──────────────────────────────────────────────────────────────
+// ── Testimonials ───────────────────────────────────────────────────────────────
 const TESTIMONIALS = [
   {
     quote: "I had a real conversation on the first match. That's never happened on Tinder.",
     name: 'Ethan K.',
-    school: 'Georgetown \'24',
+    school: "Georgetown '24",
     initials: 'EK',
   },
   {
     quote: "The first app where I didn't feel like a profile photo. They actually read my bio.",
     name: 'Priya M.',
-    school: 'MIT \'25',
+    school: "MIT '25",
     initials: 'PM',
   },
   {
     quote: "Met my girlfriend 4 months ago. We both had 'future location: NYC.' The app knew.",
     name: 'James L.',
-    school: 'Harvard \'23',
+    school: "Harvard '23",
     initials: 'JL',
   },
   {
-    quote: "Worth every second of setup. Profile took 20 minutes, first real date happened in a week.",
+    quote: 'Worth every second of setup. Profile took 20 minutes, first real date happened in a week.',
     name: 'Aisha R.',
-    school: 'Wharton \'24',
+    school: "Wharton '24",
     initials: 'AR',
   },
 ]
 
-// ── Stat counter ──────────────────────────────────────────────────────────────
-function StatCounter({ to, label, suffix = '' }: { to: number; label: string; suffix?: string }) {
+// ── Stat counter ───────────────────────────────────────────────────────────────
+function StatCounter({
+  to,
+  label,
+  suffix = '',
+  dark = false,
+}: {
+  to: number
+  label: string
+  suffix?: string
+  dark?: boolean
+}) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true })
   const [count, setCount] = useState(0)
@@ -140,16 +150,28 @@ function StatCounter({ to, label, suffix = '' }: { to: number; label: string; su
 
   return (
     <div ref={ref} className="text-center">
-      <div className="font-display text-4xl font-black text-gray-900 md:text-5xl">
+      <div className={`font-display text-4xl font-black md:text-5xl ${dark ? 'text-white' : 'text-gray-900'}`}>
         {count.toLocaleString()}{suffix}
       </div>
-      <div className="mt-2 text-sm font-medium text-gray-500">{label}</div>
+      <div className={`mt-2 text-sm font-medium ${dark ? 'text-white/40' : 'text-gray-500'}`}>{label}</div>
     </div>
   )
 }
 
-// ── Feature card ──────────────────────────────────────────────────────────────
-function FeatureCard({ icon, title, body, delay = 0 }: { icon: React.ReactNode; title: string; body: string; delay?: number }) {
+// ── Feature card ───────────────────────────────────────────────────────────────
+function FeatureCard({
+  icon,
+  title,
+  body,
+  delay = 0,
+  dark = false,
+}: {
+  icon: React.ReactNode
+  title: string
+  body: string
+  delay?: number
+  dark?: boolean
+}) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
 
@@ -159,19 +181,33 @@ function FeatureCard({ icon, title, body, delay = 0 }: { icon: React.ReactNode; 
       initial={{ opacity: 0, y: 36 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className="group rounded-[20px] border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md hover:border-purple-100 transition-all duration-200"
+      className={
+        dark
+          ? 'group rounded-[20px] border border-white/[0.08] bg-white/[0.04] p-6 backdrop-blur-sm hover:bg-white/[0.07] transition-all duration-200'
+          : 'group rounded-[20px] border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md hover:border-purple-100 transition-all duration-200'
+      }
     >
-      <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-purple-50 text-purple-600">
+      <div
+        className={`mb-4 inline-flex h-11 w-11 items-center justify-center rounded-2xl ${
+          dark ? 'bg-purple-500/20 text-purple-400' : 'bg-purple-50 text-purple-600'
+        }`}
+      >
         {icon}
       </div>
-      <h3 className="mb-2 text-[15px] font-bold text-gray-900">{title}</h3>
-      <p className="text-sm leading-relaxed text-gray-500">{body}</p>
+      <h3 className={`mb-2 text-[15px] font-bold ${dark ? 'text-white' : 'text-gray-900'}`}>{title}</h3>
+      <p className={`text-sm leading-relaxed ${dark ? 'text-white/50' : 'text-gray-500'}`}>{body}</p>
     </motion.div>
   )
 }
 
-// ── Profile preview card ──────────────────────────────────────────────────────
-function ProfileCard({ profile, delay = 0 }: { profile: (typeof PREVIEW_PROFILES)[0]; delay?: number }) {
+// ── Profile preview card ───────────────────────────────────────────────────────
+function ProfileCard({
+  profile,
+  delay = 0,
+}: {
+  profile: (typeof PREVIEW_PROFILES)[0]
+  delay?: number
+}) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-40px' })
 
@@ -209,7 +245,9 @@ function ProfileCard({ profile, delay = 0 }: { profile: (typeof PREVIEW_PROFILES
       </div>
       <div className="p-4">
         <div className="flex items-baseline justify-between mb-1">
-          <p className="text-[15px] font-bold text-gray-900">{profile.name}, {profile.age}</p>
+          <p className="text-[15px] font-bold text-gray-900">
+            {profile.name}, {profile.age}
+          </p>
           {profile.gpa && (
             <span className="text-[10px] font-semibold text-purple-600 bg-purple-50 rounded-full px-2 py-0.5">
               {profile.gpa} GPA
@@ -233,7 +271,7 @@ function ProfileCard({ profile, delay = 0 }: { profile: (typeof PREVIEW_PROFILES
   )
 }
 
-// ── Testimonial carousel ──────────────────────────────────────────────────────
+// ── Testimonial carousel ───────────────────────────────────────────────────────
 function TestimonialCarousel() {
   const [current, setCurrent] = useState(0)
   const [paused, setPaused] = useState(false)
@@ -277,7 +315,7 @@ function TestimonialCarousel() {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <div className="overflow-hidden rounded-[24px] bg-white border border-gray-100 shadow-sm px-8 py-10 md:px-12 min-h-[200px] flex flex-col justify-between">
+      <div className="overflow-hidden rounded-[24px] border border-white/[0.08] bg-white/[0.05] backdrop-blur-sm px-8 py-10 md:px-12 min-h-[200px] flex flex-col justify-between">
         <AnimatePresence custom={direction} mode="wait">
           <motion.div
             key={current}
@@ -288,8 +326,8 @@ function TestimonialCarousel() {
             exit="exit"
             transition={{ duration: 0.48, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
-            <Quote size={28} className="mb-5 text-purple-200" />
-            <p className="text-lg font-medium leading-relaxed text-gray-800 md:text-xl">
+            <Quote size={28} className="mb-5 text-purple-400/60" />
+            <p className="text-lg font-medium leading-relaxed text-white md:text-xl">
               &ldquo;{t.quote}&rdquo;
             </p>
             <div className="mt-6 flex items-center gap-3">
@@ -297,19 +335,18 @@ function TestimonialCarousel() {
                 {t.initials}
               </div>
               <div>
-                <p className="text-sm font-bold text-gray-900">{t.name}</p>
-                <p className="text-xs text-gray-400">{t.school}</p>
+                <p className="text-sm font-bold text-white">{t.name}</p>
+                <p className="text-xs text-white/40">{t.school}</p>
               </div>
             </div>
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* Controls */}
       <div className="mt-5 flex items-center justify-center gap-4">
         <button
           onClick={prev}
-          className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-400 hover:text-gray-700 transition-colors"
+          className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 text-white/40 hover:text-white hover:border-white/30 transition-colors"
         >
           <ChevronLeft size={15} />
         </button>
@@ -319,14 +356,14 @@ function TestimonialCarousel() {
               key={i}
               onClick={() => go(i)}
               className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === current ? 'w-6 bg-purple-600' : 'w-1.5 bg-gray-300'
+                i === current ? 'w-6 bg-purple-400' : 'w-1.5 bg-white/20'
               }`}
             />
           ))}
         </div>
         <button
           onClick={next}
-          className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-400 hover:text-gray-700 transition-colors"
+          className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 text-white/40 hover:text-white hover:border-white/30 transition-colors"
         >
           <ChevronRight size={15} />
         </button>
@@ -335,17 +372,25 @@ function TestimonialCarousel() {
   )
 }
 
-// ── Main ──────────────────────────────────────────────────────────────────────
+// ── Main ───────────────────────────────────────────────────────────────────────
 export default function LandingPage() {
+  const [scrolled, setScrolled] = useState(false)
   const [tickerOffset, setTickerOffset] = useState(0)
   const tickerRef = useRef<HTMLDivElement>(null)
   const heroRef = useRef<HTMLDivElement>(null)
   const heroInView = useInView(heroRef, { once: true })
 
+  // Nav scroll state
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 80)
+    window.addEventListener('scroll', handler, { passive: true })
+    return () => window.removeEventListener('scroll', handler)
+  }, [])
+
   // Parallax on hero background orbs
   const { scrollY } = useScroll()
-  const orb1Y = useTransform(scrollY, [0, 600], [0, 80])
-  const orb2Y = useTransform(scrollY, [0, 600], [0, -60])
+  const orb1Y = useTransform(scrollY, [0, 600], [0, 100])
+  const orb2Y = useTransform(scrollY, [0, 600], [0, -70])
 
   // Ticker animation
   useEffect(() => {
@@ -365,7 +410,7 @@ export default function LandingPage() {
     return () => cancelAnimationFrame(animFrame)
   }, [])
 
-  // Word-by-word headline config
+  // Word stagger config
   const line1Words = ['Finally,', 'people']
   const line2Words = ['worth', 'your', 'time.']
   const wordVariants = {
@@ -378,30 +423,61 @@ export default function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 overflow-x-hidden">
+    <div className="min-h-screen overflow-x-hidden" style={{ background: '#07040f' }}>
 
       {/* ── Nav ──────────────────────────────────────────────────────────── */}
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 py-4 md:px-10 bg-white/90 backdrop-blur-md border-b border-gray-100">
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 py-4 md:px-10 transition-all duration-300 ${
+          scrolled
+            ? 'bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm'
+            : 'bg-transparent border-b border-white/8'
+        }`}
+      >
         <Link to="/">
-          <ApexLogo size={28} showText={true} variant="default" />
+          <ApexLogo size={28} showText={true} variant={scrolled ? 'default' : 'white'} />
         </Link>
 
-        <div className="hidden md:flex items-center gap-6 text-sm font-semibold text-gray-600">
-          <Link to="/about" className="hover:text-gray-900 transition-colors">About</Link>
-          <Link to="/register" className="hover:text-gray-900 transition-colors">People</Link>
-          <Link to="/register" className="hover:text-gray-900 transition-colors">Premium</Link>
+        <div
+          className={`hidden md:flex items-center gap-6 text-sm font-semibold transition-colors ${
+            scrolled ? 'text-gray-600' : 'text-white/75'
+          }`}
+        >
+          <Link
+            to="/about"
+            className={`transition-colors ${scrolled ? 'hover:text-gray-900' : 'hover:text-white'}`}
+          >
+            About
+          </Link>
+          <Link
+            to="/register"
+            className={`transition-colors ${scrolled ? 'hover:text-gray-900' : 'hover:text-white'}`}
+          >
+            People
+          </Link>
+          <Link
+            to="/register"
+            className={`transition-colors ${scrolled ? 'hover:text-gray-900' : 'hover:text-white'}`}
+          >
+            Premium
+          </Link>
         </div>
 
         <div className="flex items-center gap-2">
           <Link
             to="/login"
-            className="rounded-full px-4 py-2 text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors"
+            className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+              scrolled ? 'text-gray-600 hover:text-gray-900' : 'text-white/75 hover:text-white'
+            }`}
           >
             Log in
           </Link>
           <Link
             to="/register"
-            className="rounded-full bg-gradient-to-r from-purple-600 to-violet-600 px-4 py-2 text-sm font-bold text-white shadow-md shadow-purple-200 hover:shadow-purple-300 transition-all hover:scale-[1.02]"
+            className={`rounded-full px-4 py-2 text-sm font-bold transition-all hover:scale-[1.02] ${
+              scrolled
+                ? 'bg-gradient-to-r from-purple-600 to-violet-600 text-white shadow-md shadow-purple-200'
+                : 'bg-white text-purple-700 shadow-lg shadow-white/10'
+            }`}
           >
             Apply to join
           </Link>
@@ -409,25 +485,39 @@ export default function LandingPage() {
       </nav>
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <section className="relative flex min-h-screen flex-col items-center justify-center px-5 pt-28 pb-16 text-center">
-        {/* Parallax background orbs */}
+      <section
+        className="relative flex min-h-screen flex-col items-center justify-center px-5 pt-28 pb-20 text-center overflow-hidden"
+        style={{ background: 'linear-gradient(160deg, #07040f 0%, #0d0a1a 38%, #1e0f4e 68%, #3b1680 100%)' }}
+      >
+        {/* Parallax orbs */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           <motion.div
-            style={{ y: orb1Y }}
-            className="absolute -top-40 left-1/2 h-[700px] w-[700px] -translate-x-1/2 rounded-full bg-purple-50 opacity-70 blur-[80px]"
-          />
-          <motion.div
-            style={{ y: orb2Y }}
-            className="absolute top-1/2 -right-20 h-[400px] w-[400px] rounded-full bg-violet-50 opacity-50 blur-[80px]"
-          />
-          {/* Animated gradient accent */}
-          <motion.div
-            animate={{
-              scale: [1, 1.15, 1],
-              opacity: [0.2, 0.35, 0.2],
+            style={{
+              y: orb1Y,
+              background: 'radial-gradient(circle, rgba(124,58,237,0.55) 0%, transparent 70%)',
             }}
-            transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-            className="absolute bottom-1/4 -left-32 h-[300px] w-[300px] rounded-full bg-purple-100 blur-[60px]"
+            className="absolute -top-40 left-1/2 h-[700px] w-[700px] -translate-x-1/2 rounded-full blur-[100px]"
+          />
+          <motion.div
+            style={{
+              y: orb2Y,
+              background: 'radial-gradient(circle, rgba(167,139,250,0.35) 0%, transparent 70%)',
+            }}
+            className="absolute top-1/3 -right-20 h-[500px] w-[500px] rounded-full blur-[90px]"
+          />
+          <motion.div
+            animate={{ scale: [1, 1.2, 1], opacity: [0.15, 0.28, 0.15] }}
+            transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
+            className="absolute bottom-1/4 -left-32 h-[350px] w-[350px] rounded-full blur-[70px]"
+            style={{ background: 'radial-gradient(circle, rgba(109,40,217,0.6) 0%, transparent 70%)' }}
+          />
+          {/* Dot grid */}
+          <div
+            className="absolute inset-0 opacity-[0.025]"
+            style={{
+              backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.9) 1px, transparent 1px)',
+              backgroundSize: '36px 36px',
+            }}
           />
         </div>
 
@@ -435,24 +525,31 @@ export default function LandingPage() {
           {/* Floating badge */}
           <motion.div
             initial={{ opacity: 0, y: -8 }}
-            animate={heroInView ? {
-              opacity: 1,
-              y: [0, -4, 0],
-              transition: { opacity: { duration: 0.4 }, y: { delay: 0.5, duration: 3, repeat: Infinity, ease: 'easeInOut' } },
-            } : {}}
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-purple-100 bg-purple-50 px-4 py-2 text-xs font-semibold text-purple-700"
+            animate={
+              heroInView
+                ? {
+                    opacity: 1,
+                    y: [0, -4, 0],
+                    transition: {
+                      opacity: { duration: 0.4 },
+                      y: { delay: 0.5, duration: 3, repeat: Infinity, ease: 'easeInOut' },
+                    },
+                  }
+                : {}
+            }
+            className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-semibold text-white/80 backdrop-blur-sm"
           >
             <motion.span
               animate={{ scale: [1, 1.3, 1] }}
               transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
             >
-              <Star size={10} className="fill-purple-500 text-purple-500" />
+              <Star size={10} className="fill-purple-400 text-purple-400" />
             </motion.span>
             Now live at top universities · Members accepted, not just registered
           </motion.div>
 
-          {/* Word-by-word headline */}
-          <h1 className="font-display text-5xl font-black leading-[1.08] tracking-tight text-gray-900 md:text-7xl">
+          {/* Headline */}
+          <h1 className="font-display text-5xl font-black leading-[1.06] tracking-tight text-white md:text-7xl lg:text-[5.5rem]">
             <span className="block">
               {line1Words.map((word, i) => (
                 <motion.span
@@ -476,7 +573,9 @@ export default function LandingPage() {
                   initial="hidden"
                   animate={heroInView ? 'visible' : 'hidden'}
                   className={`mr-[0.2em] inline-block ${
-                    word === 'time.' ? 'bg-gradient-to-r from-purple-600 via-violet-600 to-purple-500 bg-clip-text text-transparent' : ''
+                    word === 'time.'
+                      ? 'bg-gradient-to-r from-purple-400 via-violet-300 to-purple-300 bg-clip-text text-transparent'
+                      : ''
                   }`}
                 >
                   {word}
@@ -489,8 +588,8 @@ export default function LandingPage() {
           <motion.p
             initial={{ opacity: 0, y: 16 }}
             animate={heroInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.65 }}
-            className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-gray-500 md:text-xl"
+            transition={{ duration: 0.55, delay: 0.7 }}
+            className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-white/55 md:text-xl"
           >
             79% of Gen Z are burned out on dating apps. Apex is what comes next —
             verified real people, compatibility over chemistry, no swiping required.
@@ -500,23 +599,22 @@ export default function LandingPage() {
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={heroInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.8 }}
+            transition={{ duration: 0.5, delay: 0.85 }}
             className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center"
           >
-            {/* Glowing primary CTA */}
             <motion.div
               animate={{
                 boxShadow: [
-                  '0 0 0 0 rgba(124, 58, 237, 0.4)',
-                  '0 0 0 14px rgba(124, 58, 237, 0)',
+                  '0 0 0 0 rgba(255,255,255,0.2)',
+                  '0 0 0 16px rgba(255,255,255,0)',
                 ],
               }}
-              transition={{ duration: 2, repeat: Infinity, ease: 'easeOut' }}
+              transition={{ duration: 2.2, repeat: Infinity, ease: 'easeOut' }}
               className="rounded-full"
             >
               <Link
                 to="/register"
-                className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-600 to-violet-600 px-7 py-3.5 text-base font-bold text-white shadow-lg shadow-purple-200 transition-all hover:shadow-purple-300 hover:scale-[1.02]"
+                className="group flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-base font-bold text-purple-700 shadow-xl shadow-white/10 transition-all hover:shadow-white/20 hover:scale-[1.02]"
               >
                 Check your eligibility
                 <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
@@ -524,7 +622,7 @@ export default function LandingPage() {
             </motion.div>
             <Link
               to="/login"
-              className="flex items-center gap-2 rounded-full border border-gray-200 bg-white px-7 py-3.5 text-base font-semibold text-gray-700 transition-all hover:border-gray-300 hover:shadow-sm"
+              className="flex items-center gap-2 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm px-7 py-3.5 text-base font-semibold text-white transition-all hover:border-white/40 hover:bg-white/10"
             >
               Sign in
             </Link>
@@ -533,22 +631,22 @@ export default function LandingPage() {
           <motion.p
             initial={{ opacity: 0 }}
             animate={heroInView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.5, delay: 1 }}
-            className="mt-4 text-xs text-gray-400"
+            transition={{ duration: 0.5, delay: 1.1 }}
+            className="mt-4 text-xs text-white/28"
           >
             Free to join · No credit card required · Verified profiles only
           </motion.p>
         </div>
 
         {/* Ticker strip */}
-        <div className="absolute bottom-0 left-0 right-0 overflow-hidden border-t border-gray-100 bg-gray-50 py-3">
+        <div className="absolute bottom-0 left-0 right-0 overflow-hidden border-t border-white/8 bg-black/30 backdrop-blur-sm py-3">
           <div
             ref={tickerRef}
             className="flex gap-8 whitespace-nowrap"
             style={{ transform: `translateX(-${tickerOffset}px)`, willChange: 'transform' }}
           >
             {[...TICKER_ITEMS, ...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => (
-              <span key={i} className="text-xs font-medium text-gray-500">
+              <span key={i} className="text-xs font-medium text-white/45">
                 {item}
               </span>
             ))}
@@ -556,64 +654,135 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── Stats ────────────────────────────────────────────────────────── */}
-      <section className="border-y border-gray-100 bg-gray-50 py-14">
+      {/* ── Stats ── (dark) ───────────────────────────────────────────────── */}
+      <section style={{ background: '#07040f' }} className="border-y border-white/[0.05] py-16">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="mx-auto grid max-w-4xl grid-cols-2 gap-8 px-8 md:grid-cols-4"
+          className="mx-auto grid max-w-4xl grid-cols-2 gap-10 px-8 md:grid-cols-4"
         >
-          <StatCounter to={2400} suffix="+" label="Verified members" />
-          <StatCounter to={47} suffix="+" label="Universities represented" />
-          <StatCounter to={84} suffix="%" label="Report better quality matches" />
-          <StatCounter to={27} suffix="%" label="Of US marriages start on apps" />
+          <StatCounter to={2400} suffix="+" label="Verified members" dark />
+          <StatCounter to={47} suffix="+" label="Universities represented" dark />
+          <StatCounter to={84} suffix="%" label="Report better quality matches" dark />
+          <StatCounter to={27} suffix="%" label="Of US marriages start on apps" dark />
         </motion.div>
       </section>
 
-      {/* ── Profile preview ───────────────────────────────────────────────── */}
-      <section className="mx-auto max-w-5xl px-6 py-24">
-        <div className="mb-3 text-center">
-          <span className="text-xs font-bold uppercase tracking-[0.25em] text-purple-600">Who you&apos;ll meet</span>
-        </div>
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="mb-4 text-center font-display text-3xl font-black text-gray-900 md:text-5xl"
-        >
-          This is what
-          <br />
-          <span className="text-gray-400">an Apex profile looks like.</span>
-        </motion.h2>
-        <p className="mx-auto mb-12 max-w-md text-center text-sm leading-relaxed text-gray-500">
-          Not curated photos and a two-word bio. Real credentials, real ambition, real people.
-        </p>
+      {/* ── Profile preview ── (white) ────────────────────────────────────── */}
+      <section className="bg-white px-6 py-24">
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-3 text-center">
+            <span className="text-xs font-bold uppercase tracking-[0.25em] text-purple-600">
+              Who you&apos;ll meet
+            </span>
+          </div>
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="mb-4 text-center font-display text-3xl font-black text-gray-900 md:text-5xl"
+          >
+            This is what
+            <br />
+            <span className="text-gray-400">an Apex profile looks like.</span>
+          </motion.h2>
+          <p className="mx-auto mb-12 max-w-md text-center text-sm leading-relaxed text-gray-500">
+            Not curated photos and a two-word bio. Real credentials, real ambition, real people.
+          </p>
 
-        <div className="flex gap-5 overflow-x-auto pb-4 justify-center flex-wrap md:flex-nowrap md:overflow-visible">
-          {PREVIEW_PROFILES.map((profile, i) => (
-            <ProfileCard key={profile.name} profile={profile} delay={i * 0.1} />
-          ))}
-        </div>
+          <div className="flex gap-5 overflow-x-auto pb-4 justify-center flex-wrap md:flex-nowrap md:overflow-visible">
+            {PREVIEW_PROFILES.map((profile, i) => (
+              <ProfileCard key={profile.name} profile={profile} delay={i * 0.1} />
+            ))}
+          </div>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.5 }}
-          className="mt-8 text-center text-xs text-gray-400"
-        >
-          Sample profiles shown for illustration. Real members are verified and curated.
-        </motion.p>
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5 }}
+            className="mt-8 text-center text-xs text-gray-400"
+          >
+            Sample profiles shown for illustration. Real members are verified and curated.
+          </motion.p>
+        </div>
       </section>
 
-      {/* ── Who it's for ─────────────────────────────────────────────────── */}
-      <section className="border-y border-gray-100 bg-gray-50 py-24">
+      {/* ── Who it's for ── (dark) ────────────────────────────────────────── */}
+      <section style={{ background: '#0d0a1e' }} className="py-24 border-y border-white/[0.05]">
         <div className="mx-auto max-w-5xl px-6">
           <div className="mb-3 text-center">
-            <span className="text-xs font-bold uppercase tracking-[0.25em] text-purple-600">Who it&apos;s for</span>
+            <span className="text-xs font-bold uppercase tracking-[0.25em] text-purple-400">
+              Who it&apos;s for
+            </span>
+          </div>
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="mb-14 text-center font-display text-3xl font-black text-white md:text-5xl"
+          >
+            Apex is for people who
+            <br />
+            <span className="text-white/30">want more than a swipe.</span>
+          </motion.h2>
+
+          <div className="grid gap-4 md:grid-cols-3">
+            <FeatureCard
+              dark
+              delay={0}
+              icon={<GraduationCap size={20} />}
+              title="Top students & graduates"
+              body="College-verified profiles with real credentials. GPA, SAT, ACT — showcase what you've built, not just how you look."
+            />
+            <FeatureCard
+              dark
+              delay={0.07}
+              icon={<Briefcase size={20} />}
+              title="Ambitious professionals"
+              body="Finance, tech, law, medicine — connect with someone who matches your career drive and life trajectory."
+            />
+            <FeatureCard
+              dark
+              delay={0.14}
+              icon={<MapPin size={20} />}
+              title="Relocating & planning ahead"
+              body="Moving to a new city? Meet people already there or making the same move. Relocation-aware matching built in."
+            />
+            <FeatureCard
+              dark
+              delay={0.21}
+              icon={<ShieldCheck size={20} />}
+              title="Identity-verified members"
+              body="Every member can verify their identity via photo ID. No catfishes. No bots. Just real, accountable people."
+            />
+            <FeatureCard
+              dark
+              delay={0.28}
+              icon={<Heart size={20} />}
+              title="Serious about connection"
+              body="Built for long-term and marriage-track relationships. Not another app to feel lonely on."
+            />
+            <FeatureCard
+              dark
+              delay={0.35}
+              icon={<Zap size={20} />}
+              title="Strength & lifestyle"
+              body="Track your gym stats, showcase your strength, link your social presence. A full picture of who you are."
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ── How it works ── (white) ───────────────────────────────────────── */}
+      <section className="bg-white px-6 py-24">
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-3 text-center">
+            <span className="text-xs font-bold uppercase tracking-[0.25em] text-purple-600">How it works</span>
           </div>
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
@@ -622,71 +791,52 @@ export default function LandingPage() {
             transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="mb-14 text-center font-display text-3xl font-black text-gray-900 md:text-5xl"
           >
-            Apex is for people who
+            Three steps to your
             <br />
-            <span className="text-gray-400">want more than a swipe.</span>
+            <span className="text-gray-400">intellectual match.</span>
           </motion.h2>
 
-          <div className="grid gap-4 md:grid-cols-3">
-            <FeatureCard delay={0} icon={<GraduationCap size={20} />} title="Top students & graduates"
-              body="College-verified profiles with real credentials. GPA, SAT, ACT — showcase what you've built, not just how you look." />
-            <FeatureCard delay={0.07} icon={<Briefcase size={20} />} title="Ambitious professionals"
-              body="Finance, tech, law, medicine — connect with someone who matches your career drive and life trajectory." />
-            <FeatureCard delay={0.14} icon={<MapPin size={20} />} title="Relocating & planning ahead"
-              body="Moving to a new city? Meet people already there or making the same move. Relocation-aware matching built in." />
-            <FeatureCard delay={0.21} icon={<ShieldCheck size={20} />} title="Identity-verified members"
-              body="Every member can verify their identity via photo ID. No catfishes. No bots. Just real, accountable people." />
-            <FeatureCard delay={0.28} icon={<Heart size={20} />} title="Serious about connection"
-              body="Built for long-term and marriage-track relationships. Not another app to feel lonely on." />
-            <FeatureCard delay={0.35} icon={<Zap size={20} />} title="Strength & lifestyle"
-              body="Track your gym stats, showcase your strength, link your social presence. A full picture of who you are." />
+          <div className="grid gap-12 md:grid-cols-3">
+            {[
+              {
+                step: '01',
+                title: 'Build your full profile',
+                body: "Add your education, career, interests, prompts, and credentials. Your profile should feel like a LinkedIn and Instagram had a very attractive child.",
+              },
+              {
+                step: '02',
+                title: 'Search like a human',
+                body: '"Harvard girl who hikes and is moving to Chicago" — type exactly what you\'re looking for. Our AI finds them.',
+              },
+              {
+                step: '03',
+                title: 'Connect with intention',
+                body: 'Send a note with your interest. No ghost-swiping. Every connection starts with something real.',
+              },
+            ].map(({ step, title, body }, i) => (
+              <motion.div
+                key={step}
+                initial={{ opacity: 0, y: 36 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ duration: 0.65, delay: i * 0.1 }}
+              >
+                <div className="mb-3 font-display text-6xl font-black text-purple-100">{step}</div>
+                <h3 className="mb-2 text-lg font-bold text-gray-900">{title}</h3>
+                <p className="text-sm leading-relaxed text-gray-500">{body}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ── How it works ─────────────────────────────────────────────────── */}
-      <section className="mx-auto max-w-5xl px-6 py-24">
-        <div className="mb-3 text-center">
-          <span className="text-xs font-bold uppercase tracking-[0.25em] text-purple-600">How it works</span>
-        </div>
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="mb-14 text-center font-display text-3xl font-black text-gray-900 md:text-5xl"
-        >
-          Three steps to your
-          <br />
-          <span className="text-gray-400">intellectual match.</span>
-        </motion.h2>
-
-        <div className="grid gap-12 md:grid-cols-3">
-          {[
-            { step: '01', title: 'Build your full profile', body: "Add your education, career, interests, prompts, and credentials. Your profile should feel like a LinkedIn and Instagram had a very attractive child." },
-            { step: '02', title: 'Search like a human', body: '"Harvard girl who hikes and is moving to Chicago" — type exactly what you\'re looking for. Our AI finds them.' },
-            { step: '03', title: 'Connect with intention', body: "Send a note with your interest. No ghost-swiping. Every connection starts with something real." },
-          ].map(({ step, title, body }, i) => (
-            <motion.div
-              key={step}
-              initial={{ opacity: 0, y: 36 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.65, delay: i * 0.1 }}
-            >
-              <div className="mb-3 font-display text-6xl font-black text-gray-100">{step}</div>
-              <h3 className="mb-2 text-lg font-bold text-gray-900">{title}</h3>
-              <p className="text-sm leading-relaxed text-gray-500">{body}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── Comparison table ──────────────────────────────────────────────── */}
-      <section className="border-y border-gray-100 bg-gray-50 py-24">
+      {/* ── Comparison table ── (light gray) ─────────────────────────────── */}
+      <section className="bg-gray-50 border-y border-gray-100 py-24">
         <div className="mx-auto max-w-3xl px-6">
           <div className="mb-3 text-center">
-            <span className="text-xs font-bold uppercase tracking-[0.25em] text-purple-600">The difference</span>
+            <span className="text-xs font-bold uppercase tracking-[0.25em] text-purple-600">
+              The difference
+            </span>
           </div>
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
@@ -745,69 +895,79 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── Verification standard ─────────────────────────────────────────── */}
-      <section className="mx-auto max-w-5xl px-6 py-24">
-        <div className="mb-3 text-center">
-          <span className="text-xs font-bold uppercase tracking-[0.25em] text-purple-600">The standard</span>
-        </div>
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="mb-4 text-center font-display text-3xl font-black text-gray-900 md:text-5xl"
-        >
-          Curated, not crowdsourced.
-        </motion.h2>
-        <p className="mx-auto mb-12 max-w-xl text-center text-base leading-relaxed text-gray-500">
-          Every profile goes through our credibility layer before becoming visible.
-        </p>
+      {/* ── Verification standard ── (white) ─────────────────────────────── */}
+      <section className="bg-white px-6 py-24">
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-3 text-center">
+            <span className="text-xs font-bold uppercase tracking-[0.25em] text-purple-600">The standard</span>
+          </div>
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="mb-4 text-center font-display text-3xl font-black text-gray-900 md:text-5xl"
+          >
+            Curated, not crowdsourced.
+          </motion.h2>
+          <p className="mx-auto mb-12 max-w-xl text-center text-base leading-relaxed text-gray-500">
+            Every profile goes through our credibility layer before becoming visible.
+          </p>
 
-        <div className="mx-auto max-w-2xl rounded-[24px] border border-gray-100 bg-white p-8 shadow-sm">
-          {[
-            { label: 'Email verification', desc: 'Every account verified by email before accessing the app' },
-            { label: 'Photo verification', desc: 'Real selfie required during profile setup — no stolen photos' },
-            { label: 'ID verification (optional)', desc: 'Submit a government ID for the Apex Verified badge' },
-            { label: 'School email verification', desc: 'Use a .edu email to unlock your Verified Student badge automatically' },
-            { label: 'Credential showcase', desc: 'GPA, SAT, ACT, career, strength stats — own your achievements' },
-          ].map(({ label, desc }, i) => (
-            <motion.div
-              key={label}
-              initial={{ opacity: 0, x: -24 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.07 }}
-              className={`flex items-start gap-4 ${i > 0 ? 'mt-5 pt-5 border-t border-gray-100' : ''}`}
-            >
-              <CheckCircle2 size={17} className="mt-0.5 flex-shrink-0 text-emerald-500" />
-              <div>
-                <p className="text-sm font-semibold text-gray-900">{label}</p>
-                <p className="mt-0.5 text-xs leading-relaxed text-gray-500">{desc}</p>
-              </div>
-            </motion.div>
-          ))}
+          <div className="mx-auto max-w-2xl rounded-[24px] border border-gray-100 bg-white p-8 shadow-sm">
+            {[
+              { label: 'Email verification', desc: 'Every account verified by email before accessing the app' },
+              { label: 'Photo verification', desc: 'Real selfie required during profile setup — no stolen photos' },
+              { label: 'ID verification (optional)', desc: 'Submit a government ID for the Apex Verified badge' },
+              {
+                label: 'School email verification',
+                desc: 'Use a .edu email to unlock your Verified Student badge automatically',
+              },
+              {
+                label: 'Credential showcase',
+                desc: 'GPA, SAT, ACT, career, strength stats — own your achievements',
+              },
+            ].map(({ label, desc }, i) => (
+              <motion.div
+                key={label}
+                initial={{ opacity: 0, x: -24 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.07 }}
+                className={`flex items-start gap-4 ${i > 0 ? 'mt-5 pt-5 border-t border-gray-100' : ''}`}
+              >
+                <CheckCircle2 size={17} className="mt-0.5 flex-shrink-0 text-emerald-500" />
+                <div>
+                  <p className="text-sm font-semibold text-gray-900">{label}</p>
+                  <p className="mt-0.5 text-xs leading-relaxed text-gray-500">{desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* ── Testimonials carousel ─────────────────────────────────────────── */}
-      <section className="border-y border-gray-100 bg-gray-50 py-24 px-6">
+      {/* ── Testimonials ── (dark) ────────────────────────────────────────── */}
+      <section style={{ background: '#07040f' }} className="py-24 px-6 border-y border-white/[0.05]">
         <div className="mb-3 text-center">
-          <span className="text-xs font-bold uppercase tracking-[0.25em] text-purple-600">What members say</span>
+          <span className="text-xs font-bold uppercase tracking-[0.25em] text-purple-400">
+            What members say
+          </span>
         </div>
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="mb-12 text-center font-display text-3xl font-black text-gray-900 md:text-4xl"
+          className="mb-12 text-center font-display text-3xl font-black text-white md:text-4xl"
         >
           The contrast is real.
         </motion.h2>
         <TestimonialCarousel />
       </section>
 
-      {/* ── CTA banner ───────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden border-t border-gray-100 bg-gradient-to-br from-purple-600 via-violet-600 to-purple-700 px-6 py-24 text-center">
+      {/* ── CTA banner ── (purple gradient) ──────────────────────────────── */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-purple-600 via-violet-600 to-purple-700 px-6 py-24 text-center">
         <div className="pointer-events-none absolute inset-0">
           <motion.div
             animate={{ scale: [1, 1.2, 1], opacity: [0.06, 0.12, 0.06] }}
@@ -837,7 +997,8 @@ export default function LandingPage() {
             ))}
           </h2>
           <p className="mx-auto mt-5 max-w-md text-base leading-relaxed text-white/80">
-            Stop settling for apps built for everyone. Apex is built for people who take their future seriously.
+            Stop settling for apps built for everyone. Apex is built for people who take their future
+            seriously.
           </p>
           <motion.div
             animate={{
@@ -859,19 +1020,22 @@ export default function LandingPage() {
           </motion.div>
           <p className="mt-4 text-xs text-white/60">
             By creating an account you agree to our{' '}
-            <Link to="/terms" className="underline underline-offset-2 hover:text-white">Terms of Service</Link>
-            {' '}and{' '}
-            <Link to="/privacy" className="underline underline-offset-2 hover:text-white">Privacy Policy</Link>.
+            <Link to="/terms" className="underline underline-offset-2 hover:text-white">
+              Terms of Service
+            </Link>{' '}
+            and{' '}
+            <Link to="/privacy" className="underline underline-offset-2 hover:text-white">
+              Privacy Policy
+            </Link>
+            .
           </p>
         </motion.div>
       </section>
 
-      {/* ── Footer ───────────────────────────────────────────────────────── */}
+      {/* ── Footer ── (dark) ─────────────────────────────────────────────── */}
       <footer style={{ background: '#0a0614' }} className="px-8 py-16 md:px-12">
         <div className="mx-auto max-w-5xl">
-          {/* Top row */}
           <div className="flex flex-col gap-12 md:flex-row md:justify-between">
-            {/* Left: brand */}
             <div className="max-w-xs">
               <ApexLogo size={32} showText={true} variant="white" />
               <p className="mt-4 text-sm leading-relaxed text-white/45">
@@ -897,41 +1061,79 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* Right: link columns */}
             <div className="grid grid-cols-2 gap-10 sm:grid-cols-3">
               <div>
-                <p className="mb-5 text-[11px] font-bold uppercase tracking-[0.22em] text-white/30">Product</p>
+                <p className="mb-5 text-[11px] font-bold uppercase tracking-[0.22em] text-white/30">
+                  Product
+                </p>
                 <div className="flex flex-col gap-3.5">
-                  <Link to="/register" className="text-sm text-white/55 transition-colors hover:text-white">Get started</Link>
-                  <Link to="/login" className="text-sm text-white/55 transition-colors hover:text-white">Sign in</Link>
-                  <Link to="/about" className="text-sm text-white/55 transition-colors hover:text-white">About</Link>
+                  <Link to="/register" className="text-sm text-white/55 transition-colors hover:text-white">
+                    Get started
+                  </Link>
+                  <Link to="/login" className="text-sm text-white/55 transition-colors hover:text-white">
+                    Sign in
+                  </Link>
+                  <Link to="/about" className="text-sm text-white/55 transition-colors hover:text-white">
+                    About
+                  </Link>
                 </div>
               </div>
               <div>
-                <p className="mb-5 text-[11px] font-bold uppercase tracking-[0.22em] text-white/30">Support</p>
+                <p className="mb-5 text-[11px] font-bold uppercase tracking-[0.22em] text-white/30">
+                  Support
+                </p>
                 <div className="flex flex-col gap-3.5">
-                  <a href="mailto:hello@apex-social.com" className="text-sm text-white/55 transition-colors hover:text-white">Contact us</a>
-                  <Link to="/community-guidelines" className="text-sm text-white/55 transition-colors hover:text-white">Community guidelines</Link>
+                  <a
+                    href="mailto:hello@apex-social.com"
+                    className="text-sm text-white/55 transition-colors hover:text-white"
+                  >
+                    Contact us
+                  </a>
+                  <Link
+                    to="/community-guidelines"
+                    className="text-sm text-white/55 transition-colors hover:text-white"
+                  >
+                    Community guidelines
+                  </Link>
                 </div>
               </div>
               <div>
-                <p className="mb-5 text-[11px] font-bold uppercase tracking-[0.22em] text-white/30">Legal</p>
+                <p className="mb-5 text-[11px] font-bold uppercase tracking-[0.22em] text-white/30">
+                  Legal
+                </p>
                 <div className="flex flex-col gap-3.5">
-                  <Link to="/privacy" className="text-sm text-white/55 transition-colors hover:text-white">Privacy Policy</Link>
-                  <Link to="/terms" className="text-sm text-white/55 transition-colors hover:text-white">Terms of Service</Link>
-                  <Link to="/community-guidelines" className="text-sm text-white/55 transition-colors hover:text-white">Community Guidelines</Link>
+                  <Link to="/privacy" className="text-sm text-white/55 transition-colors hover:text-white">
+                    Privacy Policy
+                  </Link>
+                  <Link to="/terms" className="text-sm text-white/55 transition-colors hover:text-white">
+                    Terms of Service
+                  </Link>
+                  <Link
+                    to="/community-guidelines"
+                    className="text-sm text-white/55 transition-colors hover:text-white"
+                  >
+                    Community Guidelines
+                  </Link>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Bottom bar */}
           <div className="mt-14 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-7 sm:flex-row">
             <p className="text-xs text-white/25">© 2026 Apex. All rights reserved.</p>
             <div className="flex items-center gap-5">
-              <Link to="/privacy" className="text-xs text-white/35 transition-colors hover:text-white/70">Privacy</Link>
-              <Link to="/terms" className="text-xs text-white/35 transition-colors hover:text-white/70">Terms</Link>
-              <Link to="/community-guidelines" className="text-xs text-white/35 transition-colors hover:text-white/70">Guidelines</Link>
+              <Link to="/privacy" className="text-xs text-white/35 transition-colors hover:text-white/70">
+                Privacy
+              </Link>
+              <Link to="/terms" className="text-xs text-white/35 transition-colors hover:text-white/70">
+                Terms
+              </Link>
+              <Link
+                to="/community-guidelines"
+                className="text-xs text-white/35 transition-colors hover:text-white/70"
+              >
+                Guidelines
+              </Link>
             </div>
           </div>
         </div>
