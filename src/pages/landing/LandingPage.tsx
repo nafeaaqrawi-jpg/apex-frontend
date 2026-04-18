@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useInView, AnimatePresence, useScroll, useTransform } from 'framer-motion'
+import { motion, useInView, AnimatePresence, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion'
 import {
   ArrowRight,
   Briefcase,
@@ -227,6 +227,23 @@ function FeatureCard({
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
+  const rotateX = useMotionValue(0)
+  const rotateY = useMotionValue(0)
+  const springX = useSpring(rotateX, { stiffness: 260, damping: 20 })
+  const springY = useSpring(rotateY, { stiffness: 260, damping: 20 })
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const cx = rect.width / 2
+    const cy = rect.height / 2
+    rotateX.set(-((e.clientY - rect.top - cy) / cy) * 6)
+    rotateY.set(((e.clientX - rect.left - cx) / cx) * 6)
+  }
+
+  const handleMouseLeave = () => {
+    rotateX.set(0)
+    rotateY.set(0)
+  }
 
   return (
     <motion.div
@@ -234,10 +251,13 @@ function FeatureCard({
       initial={{ opacity: 0, y: 36 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       onClick={onClick}
+      style={{ rotateX: springX, rotateY: springY, transformPerspective: 900 }}
       className={
         dark
-          ? 'group rounded-[20px] border border-white/[0.08] bg-white/[0.04] p-6 backdrop-blur-sm hover:bg-white/[0.07] transition-all duration-200 cursor-pointer'
+          ? 'group rounded-[20px] border border-white/[0.08] bg-white/[0.04] p-6 backdrop-blur-sm hover:bg-white/[0.08] hover:border-purple-500/20 transition-all duration-200 cursor-pointer'
           : 'group rounded-[20px] border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md hover:border-purple-100 transition-all duration-200 cursor-pointer'
       }
     >
@@ -472,6 +492,25 @@ function ProfileCard({
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-40px' })
+  const rotateX = useMotionValue(0)
+  const rotateY = useMotionValue(0)
+  const springX = useSpring(rotateX, { stiffness: 280, damping: 22 })
+  const springY = useSpring(rotateY, { stiffness: 280, damping: 22 })
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const cx = rect.width / 2
+    const cy = rect.height / 2
+    const x = (e.clientX - rect.left - cx) / cx
+    const y = (e.clientY - rect.top - cy) / cy
+    rotateX.set(-y * 9)
+    rotateY.set(x * 9)
+  }
+
+  const handleMouseLeave = () => {
+    rotateX.set(0)
+    rotateY.set(0)
+  }
 
   return (
     <motion.div
@@ -479,8 +518,11 @@ function ProfileCard({
       initial={{ opacity: 0, y: 40, scale: 0.95 }}
       animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
       transition={{ duration: 0.6, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
-      whileHover={{ y: -6, transition: { duration: 0.22, ease: 'easeOut' } }}
+      whileHover={{ y: -8, transition: { duration: 0.22, ease: 'easeOut' } }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       onClick={onClick}
+      style={{ rotateX: springX, rotateY: springY, transformPerspective: 1000 }}
       className="relative flex-shrink-0 w-64 rounded-[24px] border border-gray-100 bg-white shadow-lg shadow-gray-100/80 overflow-hidden cursor-pointer"
     >
       <div className="relative h-48 bg-gray-100 overflow-hidden">
@@ -642,9 +684,30 @@ export default function LandingPage() {
   const [selectedProfile, setSelectedProfile] = useState<(typeof PREVIEW_PROFILES)[0] | null>(null)
   const [selectedFeature, setSelectedFeature] = useState<{ title: string; body: string; icon: React.ReactNode } | null>(null)
   const [openFaq, setOpenFaq] = useState<number | null>(null)
+  const [heroSpot, setHeroSpot] = useState({ x: -999, y: -999 })
   const tickerRef = useRef<HTMLDivElement>(null)
   const heroRef = useRef<HTMLDivElement>(null)
+  const heroSectionRef = useRef<HTMLElement>(null)
   const heroInView = useInView(heroRef, { once: true })
+
+  // Magnetic CTA motion values
+  const ctaMagX = useMotionValue(0)
+  const ctaMagY = useMotionValue(0)
+  const ctaSpringX = useSpring(ctaMagX, { stiffness: 350, damping: 25 })
+  const ctaSpringY = useSpring(ctaMagY, { stiffness: 350, damping: 25 })
+  const ctaRef = useRef<HTMLDivElement>(null)
+
+  const handleCtaMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = ctaRef.current?.getBoundingClientRect()
+    if (!rect) return
+    ctaMagX.set(((e.clientX - rect.left) / rect.width - 0.5) * 14)
+    ctaMagY.set(((e.clientY - rect.top) / rect.height - 0.5) * 8)
+  }
+
+  const handleCtaMouseLeave = () => {
+    ctaMagX.set(0)
+    ctaMagY.set(0)
+  }
 
   // Nav scroll state
   useEffect(() => {
@@ -752,11 +815,29 @@ export default function LandingPage() {
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section
+        ref={heroSectionRef}
         className="relative flex min-h-screen flex-col items-center justify-center px-5 pt-28 pb-20 text-center overflow-hidden"
         style={{ background: 'linear-gradient(160deg, #0d0521 0%, #1a0845 30%, #3b1680 62%, #6d28d9 88%, #7c3aed 100%)' }}
+        onMouseMove={(e) => {
+          const rect = heroSectionRef.current?.getBoundingClientRect()
+          if (rect) setHeroSpot({ x: e.clientX - rect.left, y: e.clientY - rect.top })
+        }}
+        onMouseLeave={() => setHeroSpot({ x: -999, y: -999 })}
       >
         {/* Parallax orbs */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          {/* Mouse spotlight */}
+          <div
+            className="absolute pointer-events-none transition-opacity duration-500 rounded-full blur-[80px]"
+            style={{
+              width: 500,
+              height: 500,
+              left: heroSpot.x - 250,
+              top: heroSpot.y - 250,
+              background: 'radial-gradient(circle, rgba(167,139,250,0.18) 0%, transparent 70%)',
+              opacity: heroSpot.x < -500 ? 0 : 1,
+            }}
+          />
           <motion.div
             style={{
               y: orb1Y,
@@ -869,6 +950,10 @@ export default function LandingPage() {
             className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center"
           >
             <motion.div
+              ref={ctaRef}
+              style={{ x: ctaSpringX, y: ctaSpringY }}
+              onMouseMove={handleCtaMouseMove}
+              onMouseLeave={handleCtaMouseLeave}
               animate={{
                 boxShadow: [
                   '0 0 0 0 rgba(255,255,255,0.2)',

@@ -106,7 +106,7 @@ export default function FAQPage() {
               Frequently Asked Questions
             </h1>
             <p className="text-base text-white/50 mb-12">
-              Everything you need to know about Apex. Can\u2019t find your answer?{' '}
+              Everything you need to know about Apex. Can't find your answer?{' '}
               <a href="mailto:hello@tryapextoday.com" className="text-purple-400 hover:text-purple-300 underline underline-offset-2">
                 Email us
               </a>
@@ -162,7 +162,7 @@ export default function FAQPage() {
 
       <footer className="border-t border-white/[0.06] px-6 py-8 md:px-12">
         <div className="mx-auto max-w-2xl flex items-center justify-between">
-          <p className="text-xs text-white/25">\u00a9 2026 Apex. All rights reserved.</p>
+          <p className="text-xs text-white/25">© 2026 Apex. All rights reserved.</p>
           <div className="flex gap-4">
             <Link to="/privacy" className="text-xs text-white/30 hover:text-white/60 transition-colors">Privacy</Link>
             <Link to="/terms" className="text-xs text-white/30 hover:text-white/60 transition-colors">Terms</Link>

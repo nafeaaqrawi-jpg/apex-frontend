@@ -117,10 +117,10 @@ export default function MembersPage() {
             <h1 className="font-display text-4xl font-black text-white md:text-6xl leading-[1.06] mb-5">
               The most ambitious people
               <br />
-              <span className="text-white/30">you\u2019ve never met.</span>
+              <span className="text-white/30">you've never met.</span>
             </h1>
             <p className="text-base leading-relaxed text-white/55 max-w-xl mx-auto mb-8">
-              Every Apex member is verified, credentialed, and here for something real. This is who you\u2019ll connect with.
+              Every Apex member is verified, credentialed, and here for something real. This is who you'll connect with.
             </p>
             <Link
               to="/register"
@@ -165,7 +165,7 @@ export default function MembersPage() {
             transition={{ duration: 0.6 }}
             className="mb-12 text-center font-display text-3xl font-black text-white md:text-4xl"
           >
-            Who you\u2019ll find on Apex.
+            Who you'll find on Apex.
           </motion.h2>
 
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
@@ -259,7 +259,7 @@ export default function MembersPage() {
             Ready to join them?
           </h2>
           <p className="text-sm text-white/45 mb-8">
-            It\u2019s free to join. Apply today and get access to the most curated member base in dating.
+            It's free to join. Apply today and get access to the most curated member base in dating.
           </p>
           <Link
             to="/register"
@@ -274,7 +274,7 @@ export default function MembersPage() {
       {/* Footer */}
       <footer className="border-t border-white/[0.06] px-6 py-8 md:px-12">
         <div className="mx-auto max-w-3xl flex items-center justify-between">
-          <p className="text-xs text-white/25">\u00a9 2026 Apex. All rights reserved.</p>
+          <p className="text-xs text-white/25">© 2026 Apex. All rights reserved.</p>
           <div className="flex gap-4">
             <Link to="/privacy" className="text-xs text-white/30 hover:text-white/60 transition-colors">Privacy</Link>
             <Link to="/terms" className="text-xs text-white/30 hover:text-white/60 transition-colors">Terms</Link>

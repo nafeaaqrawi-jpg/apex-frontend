@@ -18,10 +18,12 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [unverifiedEmail, setUnverifiedEmail] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+    setUnverifiedEmail('')
 
     if (!email || !password) {
       setError('Please fill in all fields.')
@@ -39,7 +41,13 @@ export default function LoginPage() {
         navigate('/discover')
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Login failed. Please try again.')
+      const apiErr = err as Error & { code?: string }
+      if (apiErr.code === 'EMAIL_NOT_VERIFIED') {
+        setUnverifiedEmail(email)
+        setError('Your email isn\'t verified yet. Check your inbox or resend below.')
+      } else {
+        setError(apiErr.message || 'Login failed. Please try again.')
+      }
     } finally {
       setLoading(false)
     }
@@ -86,15 +94,25 @@ export default function LoginPage() {
 
         <AnimatePresence>
           {error && (
-            <motion.p
-              className="text-xs text-red-500 font-medium -mt-1"
-              initial={{ opacity: 0, x: 0 }}
-              animate={{ opacity: 1, x: [0, -8, 8, -6, 6, 0] }}
+            <motion.div
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.4, ease: 'easeOut' }}
+              transition={{ duration: 0.3 }}
+              className="-mt-1"
             >
-              {error}
-            </motion.p>
+              <p className="text-xs text-red-500 font-medium mb-2">{error}</p>
+              {unverifiedEmail && (
+                <Link
+                  to="/verify-email"
+                  state={{ email: unverifiedEmail }}
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-purple-600 hover:text-purple-700 transition-colors underline underline-offset-2"
+                >
+                  <Mail size={12} />
+                  Resend verification email
+                </Link>
+              )}
+            </motion.div>
           )}
         </AnimatePresence>
 

@@ -72,7 +72,7 @@ export default function PremiumFeaturesPage() {
               </span>
             </h1>
             <p className="text-base leading-relaxed text-white/55 max-w-lg mx-auto">
-              Free gets you in the door. Premium gives you every tool to find your person \u2014 faster, smarter, and with zero limits.
+              Free gets you in the door. Premium gives you every tool to find your person — faster, smarter, and with zero limits.
             </p>
           </motion.div>
         </div>
@@ -210,7 +210,7 @@ export default function PremiumFeaturesPage() {
       {/* Footer */}
       <footer className="border-t border-white/[0.06] px-6 py-8 md:px-12">
         <div className="mx-auto max-w-3xl flex items-center justify-between">
-          <p className="text-xs text-white/25">\u00a9 2026 Apex. All rights reserved.</p>
+          <p className="text-xs text-white/25">© 2026 Apex. All rights reserved.</p>
           <div className="flex gap-4">
             <Link to="/privacy" className="text-xs text-white/30 hover:text-white/60 transition-colors">Privacy</Link>
             <Link to="/terms" className="text-xs text-white/30 hover:text-white/60 transition-colors">Terms</Link>

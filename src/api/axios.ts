@@ -30,7 +30,9 @@ apiClient.interceptors.response.use(
         error.response?.data?.message ||
         error.message ||
         'Something went wrong. Please try again.'
-    return Promise.reject(new Error(message))
+    const apiErr = new Error(message) as Error & { code?: string }
+    apiErr.code = error.response?.data?.code
+    return Promise.reject(apiErr)
   }
 )
 
