@@ -8,8 +8,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-        display: ['"Playfair Display"', 'Georgia', 'serif'],
+        sans: ['Manrope', 'system-ui', '-apple-system', 'sans-serif'],
+        display: ['Fraunces', 'Georgia', 'serif'],
       },
       colors: {
         apex: {
@@ -48,6 +48,7 @@ export default {
         'card': '0 4px 24px -2px rgba(124, 58, 237, 0.08), 0 2px 8px -2px rgba(0,0,0,0.06)',
         'card-hover': '0 8px 32px -2px rgba(124, 58, 237, 0.16), 0 4px 12px -2px rgba(0,0,0,0.08)',
         'button': '0 4px 14px 0 rgba(124, 58, 237, 0.39)',
+        'shell': '0 22px 70px rgba(15, 23, 42, 0.14)',
       },
     },
   },
